@@ -1,16 +1,17 @@
 import { Stack } from 'expo-router';
+import '../global.css';
+import { colorScheme } from 'nativewind';
+
+colorScheme.set('light');
 
 const RootLayout = () => {
   return (
     <Stack
       screenOptions={{
-        contentStyle: {
-          paddingHorizontal: 10,
-          paddingTop: 10,
-          backgroundColor: '#fff',
-        },
+        headerShown: false,
       }}>
-      <Stack.Screen name="index" options={{ title: 'Home' }} />
+      <Stack.Screen name="index" />
+      <Stack.Screen name="login" />
     </Stack>
   );
 };

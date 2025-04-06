@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "my-expo-app",
-    "slug": "my-expo-app",
+    "name": "nissu",
+    "slug": "nissu",
     "version": "1.0.0",
     "web": {
       "favicon": "./assets/favicon.png"
@@ -9,8 +9,11 @@
     "experiments": {
       "tsconfigPaths": true
     },
+    "scheme": "nissu",
+    "newArchEnabled": true,
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-asset"
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
