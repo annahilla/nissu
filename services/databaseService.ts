@@ -24,6 +24,14 @@ const databaseService = {
       return { error: (error as Error).message };
     }
   },
+  async updateDocument(dbId: string, colId: string, id: string, data: Habit) {
+    try {
+      return await database.updateDocument(dbId, colId, id, data);
+    } catch (error) {
+      console.error('Error deleting document:', (error as Error).message);
+      return { error: (error as Error).message };
+    }
+  },
   async deleteDocument(dbId: string, colId: string, id: string) {
     try {
       await database.deleteDocument(dbId, colId, id);

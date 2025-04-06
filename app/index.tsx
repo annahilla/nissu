@@ -58,6 +58,21 @@ const HomeScreen = () => {
     setIsAddingNewHabit(false);
   };
 
+  const updateHabit = async (id: string, updatedHabit: Habit) => {
+    const { name, streak, lastCompleted } = updatedHabit;
+
+    const response = await habitsService.updateHabit(id, {
+      name,
+      streak,
+      lastCompleted,
+      $id: id,
+    });
+
+    if (response.error) {
+      Alert.alert('Error: ', response.error);
+    }
+  };
+
   const deleteHabit = async (id: string) => {
     Alert.alert('Delete Habit', 'Are you sure you want to delete this habit?', [
       { text: 'Cancel', style: 'cancel' },
@@ -98,7 +113,11 @@ const HomeScreen = () => {
               data={habits}
               keyExtractor={(item) => item.$id}
               renderItem={({ item }) => (
-                <HabitItem habit={item} onDelete={deleteHabit} />
+                <HabitItem
+                  habit={item}
+                  onEdit={updateHabit}
+                  onDelete={deleteHabit}
+                />
               )}
               showsVerticalScrollIndicator={false}
             />

@@ -1,3 +1,4 @@
+import { Habit } from '@/types/habits';
 import databaseService from './databaseService';
 import { ID } from 'react-native-appwrite';
 
@@ -37,6 +38,20 @@ const habitsService = {
       colId,
       data,
       ID.unique()
+    );
+
+    if (response?.error) {
+      return { error: response.error };
+    }
+
+    return { data: response };
+  },
+  async updateHabit(id: string, updatedHabit: Habit) {
+    const response = await databaseService.updateDocument(
+      dbId,
+      colId,
+      id,
+      updatedHabit
     );
 
     if (response?.error) {
