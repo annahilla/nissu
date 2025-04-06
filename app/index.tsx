@@ -15,6 +15,7 @@ import { useState, useEffect } from 'react';
 import habitsService from '@/services/habitService';
 import { Habit } from '@/types/habits';
 import HabitInput from '@/components/HabitInput';
+import { Container } from '@/components/Container';
 
 const background = Asset.fromModule(require('@/assets/background.png')).uri;
 
@@ -22,7 +23,6 @@ const HomeScreen = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [newHabit, setNewHabit] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [isAddingNewHabit, setIsAddingNewHabit] = useState(false);
 
   useEffect(() => {
@@ -34,11 +34,9 @@ const HomeScreen = () => {
     const response = await habitsService.getHabits();
 
     if (response.error) {
-      setError(response.error);
       Alert.alert('Error', response.error);
     } else {
       setHabits(response.data as Habit[]);
-      setError(null);
     }
 
     setIsLoading(false);
@@ -60,13 +58,31 @@ const HomeScreen = () => {
     setIsAddingNewHabit(false);
   };
 
+  const deleteHabit = async (id: string) => {
+    Alert.alert('Delete Habit', 'Are you sure you want to delete this habit?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: async () => {
+          const response = await habitsService.deleteHabit(id);
+          if (response.error) {
+            Alert.alert('Error:', response.error);
+          } else {
+            setHabits(habits.filter((habit) => habit.$id !== id));
+          }
+        },
+      },
+    ]);
+  };
+
   return (
     <View className="flex-1">
       <ImageBackground
         source={{ uri: background }}
         resizeMode="cover"
         className="flex-1 items-center justify-center">
-        <View className="flex w-[80%] flex-col gap-10 rounded-xl border border-2 border-brown bg-beige p-5">
+        <Container>
           <View className="flex flex-row items-center justify-between">
             <View className="flex flex-row items-center gap-2">
               <Star width={24} height={24} />
@@ -81,7 +97,10 @@ const HomeScreen = () => {
             <FlatList
               data={habits}
               keyExtractor={(item) => item.$id}
-              renderItem={({ item }) => <HabitItem habit={item} />}
+              renderItem={({ item }) => (
+                <HabitItem habit={item} onDelete={deleteHabit} />
+              )}
+              showsVerticalScrollIndicator={false}
             />
           )}
 
@@ -101,7 +120,7 @@ const HomeScreen = () => {
               <Text className="text-2xl text-green/60">+</Text>
             </TouchableOpacity>
           )}
-        </View>
+        </Container>
       </ImageBackground>
     </View>
   );

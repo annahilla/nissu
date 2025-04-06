@@ -45,6 +45,13 @@ const habitsService = {
 
     return { data: response };
   },
+  async deleteHabit(id: string) {
+    const response = await databaseService.deleteDocument(dbId, colId, id);
+    if (response?.error) {
+      return { error: response.error };
+    }
+    return { success: true };
+  },
 };
 
 export default habitsService;
