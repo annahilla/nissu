@@ -22,6 +22,29 @@ const habitsService = {
       };
     }
   },
+  async addHabit(name: string) {
+    if (!name) {
+      return { error: 'Habit text cannot be empty' };
+    }
+
+    const data = {
+      name: name,
+      streak: 0,
+    };
+
+    const response = await databaseService.createDocument(
+      dbId,
+      colId,
+      data,
+      ID.unique()
+    );
+
+    if (response?.error) {
+      return { error: response.error };
+    }
+
+    return { data: response };
+  },
 };
 
 export default habitsService;

@@ -14,13 +14,16 @@ import HabitItem from '@/components/HabitItem';
 import { useState, useEffect } from 'react';
 import habitsService from '@/services/habitService';
 import { Habit } from '@/types/habits';
+import HabitInput from '@/components/HabitInput';
 
 const background = Asset.fromModule(require('@/assets/background.png')).uri;
 
 const HomeScreen = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
+  const [newHabit, setNewHabit] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isAddingNewHabit, setIsAddingNewHabit] = useState(false);
 
   useEffect(() => {
     fetchHabits();
@@ -39,6 +42,22 @@ const HomeScreen = () => {
     }
 
     setIsLoading(false);
+  };
+
+  const addHabit = async () => {
+    if (newHabit.trim() === '') return;
+
+    const response = await habitsService.addHabit(newHabit);
+
+    if (response.error) {
+      Alert.alert('Error: ', response.error);
+    } else {
+      if (response.data && !response.error) {
+        setHabits([...habits, response.data as unknown as Habit]);
+      }
+    }
+    setNewHabit('');
+    setIsAddingNewHabit(false);
   };
 
   return (
@@ -66,9 +85,22 @@ const HomeScreen = () => {
             />
           )}
 
-          <TouchableOpacity className="m-auto flex h-14 w-14 items-center justify-center rounded-full border border-2 border-green/60">
-            <Text className="text-2xl text-green/60">+</Text>
-          </TouchableOpacity>
+          {isAddingNewHabit && (
+            <HabitInput
+              onCancel={() => setIsAddingNewHabit(false)}
+              newHabit={newHabit}
+              setNewHabit={setNewHabit}
+              addHabit={addHabit}
+            />
+          )}
+
+          {!isAddingNewHabit && (
+            <TouchableOpacity
+              onPress={() => setIsAddingNewHabit(true)}
+              className="m-auto flex h-14 w-14 items-center justify-center rounded-full border border-2 border-green/60">
+              <Text className="text-2xl text-green/60">+</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ImageBackground>
     </View>
