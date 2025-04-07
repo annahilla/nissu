@@ -1,14 +1,21 @@
 import { Habit } from '@/types/habits';
 import databaseService from './databaseService';
-import { ID } from 'react-native-appwrite';
+import { ID, Query } from 'react-native-appwrite';
 
 const dbId = process.env.EXPO_PUBLIC_APPWRITE_DB as string;
 const colId = process.env.EXPO_PUBLIC_APPWRITE_COL_HABITS_ID as string;
 
 const habitsService = {
-  async getHabits() {
+  async getHabits(userId: string) {
+    if (!userId) {
+      console.error('Error: Missing userId in getHabits');
+      return { data: [], error: 'User ID is missing' };
+    }
+
     try {
-      const response = await databaseService.listDocuments(dbId, colId);
+      const response = await databaseService.listDocuments(dbId, colId, [
+        Query.equal('userId', userId),
+      ]);
       return response;
     } catch (error) {
       if (error instanceof Error) {
@@ -23,14 +30,15 @@ const habitsService = {
       };
     }
   },
-  async addHabit(name: string) {
+  async addHabit(userId: string, name: string) {
     if (!name) {
       return { error: 'Habit text cannot be empty' };
     }
 
     const data = {
-      name: name,
+      name,
       streak: 0,
+      userId,
     };
 
     const response = await databaseService.createDocument(

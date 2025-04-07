@@ -1,4 +1,4 @@
-import { Alert } from 'react-native';
+import { Alert, View, Text } from 'react-native';
 import { useState, useEffect } from 'react';
 import habitsService from '@/services/habitService';
 import { Habit } from '@/types/habits';
@@ -32,32 +32,35 @@ const HomeScreen = () => {
   }, [user]);
 
   const fetchHabits = async () => {
-    setIsLoading(true);
-    const response = await habitsService.getHabits();
+    if (user) {
+      setIsLoading(true);
+      const response = await habitsService.getHabits(user.$id);
 
-    if (response.error) {
-      Alert.alert('Error', response.error);
-    } else {
-      setHabits(response.data as Habit[]);
+      if (response.error) {
+        Alert.alert('Error', response.error);
+      } else {
+        setHabits(response.data as Habit[]);
+      }
+
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   const addHabit = async () => {
     if (newHabit.trim() === '') return;
 
-    const response = await habitsService.addHabit(newHabit);
-
-    if (response.error) {
-      Alert.alert('Error: ', response.error);
-    } else {
-      if (response.data && !response.error) {
-        setHabits([...habits, response.data as unknown as Habit]);
+    if (user) {
+      const response = await habitsService.addHabit(user.$id, newHabit);
+      if (response.error) {
+        Alert.alert('Error: ', response.error);
+      } else {
+        if (response.data && !response.error) {
+          setHabits([...habits, response.data as unknown as Habit]);
+        }
       }
+      setNewHabit('');
+      setIsAddingNewHabit(false);
     }
-    setNewHabit('');
-    setIsAddingNewHabit(false);
   };
 
   const updateHabit = async (id: string, updatedHabit: Habit) => {
@@ -101,15 +104,20 @@ const HomeScreen = () => {
     );
 
   return (
-    <BackgroundLayout className="h-[55%]">
+    <BackgroundLayout className="relative h-[55%]">
       <HabitsHeader />
 
-      <HabitList
-        habits={habits}
-        updateHabit={updateHabit}
-        deleteHabit={deleteHabit}
-      />
-
+      {habits.length === 0 ? (
+        <Text className="flex-1 text-center text-2xl text-brown">
+          You have no habits
+        </Text>
+      ) : (
+        <HabitList
+          habits={habits}
+          updateHabit={updateHabit}
+          deleteHabit={deleteHabit}
+        />
+      )}
       {isAddingNewHabit && (
         <HabitInput
           onCancel={() => setIsAddingNewHabit(false)}
