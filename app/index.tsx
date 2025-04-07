@@ -1,4 +1,4 @@
-import { Alert, View, Text } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import { useState, useEffect } from 'react';
 import habitsService from '@/services/habitService';
 import { Habit } from '@/types/habits';
@@ -10,6 +10,10 @@ import Button from '@/components/ui/Button';
 import HabitsHeader from '@/components/layout/Header';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'expo-router';
+import Cat from '@/assets/cat.svg';
+import CustomImageBackground from '@/components/layout/CustomImageBackground';
+import TextBubble from '@/assets/text-bubble.svg';
+import TextBubbleBackground from '@/components/ui/TextBubbleBackground';
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -98,44 +102,68 @@ const HomeScreen = () => {
 
   if (isLoading)
     return (
-      <BackgroundLayout className="flex h-[55%] items-center justify-center">
+      <CustomImageBackground>
         <Spinner />
-      </BackgroundLayout>
+      </CustomImageBackground>
     );
 
   return (
-    <BackgroundLayout className="relative h-[55%]">
-      <HabitsHeader />
-
-      {habits.length === 0 ? (
-        <Text className="flex-1 text-center text-2xl text-brown">
-          You have no habits
-        </Text>
+    <>
+      {habits.length > 0 ? (
+        <BackgroundLayout className="relative h-[56%]">
+          <HabitsHeader />
+          <HabitList
+            habits={habits}
+            updateHabit={updateHabit}
+            deleteHabit={deleteHabit}
+          />
+          {isAddingNewHabit ? (
+            <HabitInput
+              onCancel={() => setIsAddingNewHabit(false)}
+              newHabit={newHabit}
+              setNewHabit={setNewHabit}
+              addHabit={addHabit}
+            />
+          ) : (
+            <Button
+              onPress={() => setIsAddingNewHabit(true)}
+              variant="outline"
+              color="green">
+              +
+            </Button>
+          )}
+        </BackgroundLayout>
       ) : (
-        <HabitList
-          habits={habits}
-          updateHabit={updateHabit}
-          deleteHabit={deleteHabit}
-        />
-      )}
-      {isAddingNewHabit && (
-        <HabitInput
-          onCancel={() => setIsAddingNewHabit(false)}
-          newHabit={newHabit}
-          setNewHabit={setNewHabit}
-          addHabit={addHabit}
-        />
-      )}
+        <CustomImageBackground className="relative flex-1">
+          <TextBubbleBackground>
+            <Text className="text-center text-lg">
+              Hi, I am Nissu. Create your first habit to start counting streaks!
+            </Text>
+            {isAddingNewHabit ? (
+              <View className="w-full">
+                <HabitInput
+                  onCancel={() => setIsAddingNewHabit(false)}
+                  newHabit={newHabit}
+                  setNewHabit={setNewHabit}
+                  addHabit={addHabit}
+                />
+              </View>
+            ) : (
+              <Button
+                onPress={() => setIsAddingNewHabit(true)}
+                variant="outline"
+                color="green">
+                +
+              </Button>
+            )}
+          </TextBubbleBackground>
 
-      {!isAddingNewHabit && (
-        <Button
-          onPress={() => setIsAddingNewHabit(true)}
-          variant="outline"
-          color="green">
-          +
-        </Button>
+          <View className="absolute bottom-2 right-4">
+            <Cat />
+          </View>
+        </CustomImageBackground>
       )}
-    </BackgroundLayout>
+    </>
   );
 };
 

@@ -33,7 +33,7 @@ const Button = ({
     return (
       <TouchableOpacity
         onPress={onPress}
-        className={`m-auto flex h-14 w-14 items-center justify-center rounded-full border border-2 ${borderColors[color]}`}>
+        className={`m-auto flex h-[3.8rem] w-[3.8rem] items-center justify-center rounded-full border border-2 ${borderColors[color]}`}>
         <Text className={`text-2xl ${textColors[color]}`}>{children}</Text>
       </TouchableOpacity>
     );
