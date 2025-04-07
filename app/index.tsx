@@ -12,8 +12,8 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'expo-router';
 import Cat from '@/assets/cat.svg';
 import CustomImageBackground from '@/components/layout/CustomImageBackground';
-import TextBubble from '@/assets/text-bubble.svg';
 import TextBubbleBackground from '@/components/ui/TextBubbleBackground';
+import LoadingScreen from '@/components/ui/LoadingScreen';
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -100,12 +100,7 @@ const HomeScreen = () => {
     ]);
   };
 
-  if (isLoading)
-    return (
-      <CustomImageBackground>
-        <Spinner />
-      </CustomImageBackground>
-    );
+  if (isLoading) return <LoadingScreen />;
 
   return (
     <>

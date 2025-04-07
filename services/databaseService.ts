@@ -11,6 +11,15 @@ const databaseService = {
       return { error: (error as Error).message };
     }
   },
+  async getDocument(dbId: string, colId: string, id: string) {
+    try {
+      const response = await database.getDocument(dbId, colId, id);
+      return { data: response || {}, error: null };
+    } catch (error) {
+      console.error('Error fetching document:', (error as Error).message);
+      return { error: (error as Error).message };
+    }
+  },
   async createDocument(
     dbId: string,
     colId: string,

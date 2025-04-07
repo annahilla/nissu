@@ -19,12 +19,29 @@ const habitsService = {
       return response;
     } catch (error) {
       if (error instanceof Error) {
-        console.log('Error fetching notes:', error.message);
+        console.log('Error fetching habits:', error.message);
       } else {
-        console.log('Error fetching notes:', error);
+        console.log('Error fetching habits:', error);
       }
       return {
         data: [],
+        error:
+          error instanceof Error ? error.message : 'An unknown error occurred',
+      };
+    }
+  },
+  async getHabit(habitId: string) {
+    try {
+      const response = databaseService.getDocument(dbId, colId, habitId);
+      return response;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log('Error fetching habit:', error.message);
+      } else {
+        console.log('Error fetching habit:', error);
+      }
+      return {
+        data: null,
         error:
           error instanceof Error ? error.message : 'An unknown error occurred',
       };

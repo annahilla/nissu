@@ -3,6 +3,7 @@ export interface Habit {
   name: string;
   streak: number;
   lastCompleted?: Date | null;
+  Created: Date;
 }
 
 export interface User {

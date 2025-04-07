@@ -14,7 +14,7 @@ const RootLayout = () => {
         }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="login" />
-        <Stack.Screen name="habit" />
+        <Stack.Screen name="habit/[id]" />
       </Stack>
     </AuthProvider>
   );
