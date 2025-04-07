@@ -4,3 +4,8 @@ export interface Habit {
   streak: number;
   lastCompleted?: Date | null;
 }
+
+export interface User {
+  $id: string;
+  email: string;
+}

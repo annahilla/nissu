@@ -11,6 +11,7 @@ module.exports = {
       colors: {
         beige: '#E9E8DF',
         brown: '#A68F75',
+        darkGray: '#525252',
         green: 'rgba(78, 150, 78, 0.6)',
         orange: 'rgba(255, 144, 9, 0.6)',
         lightOrange: 'rgba(255, 144, 9, 0.3)',

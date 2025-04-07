@@ -14,6 +14,11 @@ const Button = ({
   color = 'brown',
   onPress,
 }: ButtonProps) => {
+  const backgroundColors = {
+    green: 'bg-green',
+    brown: 'bg-brown',
+  };
+
   const borderColors = {
     green: 'border-green',
     brown: 'border-brown',
@@ -33,6 +38,14 @@ const Button = ({
       </TouchableOpacity>
     );
   }
+
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      className={`m-auto flex w-full items-center justify-center rounded-full p-2 ${backgroundColors[color]}`}>
+      <Text className="text-lg font-semibold text-beige">{children}</Text>
+    </TouchableOpacity>
+  );
 };
 
 export default Button;

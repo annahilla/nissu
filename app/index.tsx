@@ -8,16 +8,28 @@ import Spinner from '@/components/ui/Spinner';
 import HabitList from '@/components/habits/HabitList';
 import Button from '@/components/ui/Button';
 import HabitsHeader from '@/components/layout/Header';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'expo-router';
 
 const HomeScreen = () => {
+  const router = useRouter();
+  const { user, isLoading: authLoading } = useAuth();
   const [habits, setHabits] = useState<Habit[]>([]);
   const [newHabit, setNewHabit] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isAddingNewHabit, setIsAddingNewHabit] = useState(false);
 
   useEffect(() => {
-    fetchHabits();
-  }, []);
+    if (!authLoading && !user) {
+      router.replace('/login');
+    }
+  }, [user, authLoading]);
+
+  useEffect(() => {
+    if (user) {
+      fetchHabits();
+    }
+  }, [user]);
 
   const fetchHabits = async () => {
     setIsLoading(true);
@@ -81,19 +93,22 @@ const HomeScreen = () => {
     ]);
   };
 
+  if (isLoading)
+    return (
+      <BackgroundLayout className="flex h-[55%] items-center justify-center">
+        <Spinner />
+      </BackgroundLayout>
+    );
+
   return (
-    <BackgroundLayout>
+    <BackgroundLayout className="h-[55%]">
       <HabitsHeader />
 
-      {isLoading ? (
-        <Spinner className="my-10" />
-      ) : (
-        <HabitList
-          habits={habits}
-          updateHabit={updateHabit}
-          deleteHabit={deleteHabit}
-        />
-      )}
+      <HabitList
+        habits={habits}
+        updateHabit={updateHabit}
+        deleteHabit={deleteHabit}
+      />
 
       {isAddingNewHabit && (
         <HabitInput
