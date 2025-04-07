@@ -67,7 +67,7 @@ const HabitItem = ({ habit, onDelete, onEdit }: HabitItemProps) => {
   return (
     <TouchableOpacity
       onLongPress={() => onDelete(habit.$id)}
-      className="my-2 flex h-[3.8rem] flex-row items-center justify-between rounded-full border border-2 border-green/60">
+      className="my-2 flex h-[3.8rem] flex-row items-center justify-between rounded-full border border-2 border-green">
       <View className="flex flex-row items-center gap-2">
         {isChecked ? (
           <TouchableOpacity
@@ -78,13 +78,13 @@ const HabitItem = ({ habit, onDelete, onEdit }: HabitItemProps) => {
         ) : (
           <TouchableOpacity
             onPress={handleCheck}
-            className="m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 border-green/60"></TouchableOpacity>
+            className="m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 border-green"></TouchableOpacity>
         )}
 
         <Text className="max-w-28 text-lg">{habit.name}</Text>
       </View>
       <View
-        className={`${isChecked ? 'bg-orange/60' : 'bg-orange/30'} flex h-14 w-14 items-center justify-center rounded-full`}>
+        className={`${isChecked ? 'bg-orange' : 'bg-lightOrange'} flex h-14 w-14 items-center justify-center rounded-full`}>
         <Text className="text-white">{streak}</Text>
       </View>
     </TouchableOpacity>

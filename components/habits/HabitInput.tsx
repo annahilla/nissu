@@ -15,9 +15,9 @@ const HabitInput = ({
   addHabit,
 }: HabitInputProps) => {
   return (
-    <View className="flex h-[3.8rem] flex-row items-center justify-between rounded-full border border-2 border-green/60">
+    <View className="flex h-[3.8rem] flex-row items-center justify-between rounded-full border border-2 border-green">
       <View className="flex flex-row items-center gap-2">
-        <View className="m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 border-green/60 text-white"></View>
+        <View className="m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 border-green text-white"></View>
         <TextInput
           className="flex max-w-28 flex-wrap text-lg placeholder:opacity-60"
           placeholder="Enter habit"

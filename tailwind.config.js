@@ -11,9 +11,10 @@ module.exports = {
       colors: {
         beige: '#E9E8DF',
         brown: '#A68F75',
-        green: '#4E964E',
-        orange: '#FF9009',
-        blue: '#5EBACC',
+        green: 'rgba(78, 150, 78, 0.6)',
+        orange: 'rgba(255, 144, 9, 0.6)',
+        lightOrange: 'rgba(255, 144, 9, 0.3)',
+        blue: 'rgba(94, 186, 204, 0.6)',
       },
     },
   },

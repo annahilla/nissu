@@ -1,10 +1,11 @@
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
+import BackgroundLayout from '@/components/layout/BackgroundLayout';
 
 const LoginScreen = () => {
   return (
-    <View>
-      <Text>Login Screen a</Text>
-    </View>
+    <BackgroundLayout>
+      <Text>Login</Text>
+    </BackgroundLayout>
   );
 };
 
