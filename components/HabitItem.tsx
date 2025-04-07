@@ -1,7 +1,8 @@
 import { Habit } from '@/types/habits';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import Check from '@/assets/check.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { isCompletedToday, wasCompletedYesterday } from '@/utils/streaks';
 
 interface HabitItemProps {
   habit: Habit;
@@ -11,33 +12,57 @@ interface HabitItemProps {
 
 const HabitItem = ({ habit, onDelete, onEdit }: HabitItemProps) => {
   const today = new Date();
-  const formattedDate = today.toISOString().split('T')[0];
-  const formatedLastCompletedDate = habit.lastCompleted
-    ? new Date(habit.lastCompleted).toISOString().split('T')[0]
-    : 'N/A';
-  const isCompletedToday = formattedDate === formatedLastCompletedDate;
+  const completed = habit.lastCompleted
+    ? isCompletedToday(habit.lastCompleted)
+    : false;
 
-  const [isChecked, setIsChecked] = useState(isCompletedToday);
+  const [isChecked, setIsChecked] = useState(completed);
+  const [streak, setStreak] = useState(habit.streak);
 
   const handleCheck = () => {
-    setIsChecked((prev) => !prev);
+    let newStreak = streak;
+    let newLastCompleted = habit.lastCompleted;
 
     if (!isChecked) {
+      newStreak = streak + 1;
+      newLastCompleted = today;
+    } else if (streak > 0) {
+      newStreak = streak - 1;
+      newLastCompleted = habit.lastCompleted;
+    }
+
+    setStreak(newStreak);
+    setIsChecked((prev) => !prev);
+
+    const updatedHabit = {
+      ...habit,
+      streak: newStreak,
+      lastCompleted: newLastCompleted,
+    };
+
+    onEdit(habit.$id, updatedHabit);
+  };
+
+  const handleLooseStreak = () => {
+    const isStreakCurrent = habit.lastCompleted
+      ? wasCompletedYesterday(habit.lastCompleted) ||
+        isCompletedToday(habit.lastCompleted)
+      : false;
+
+    if (!isStreakCurrent && habit.streak > 0) {
+      Alert.alert(`Ohhhhh! You lost the streak for ${habit.name}`);
       const updatedHabit = {
         ...habit,
-        streak: habit.streak++,
-        lastCompleted: today,
+        streak: 0,
       };
-      onEdit(habit.$id, updatedHabit);
-    } else {
-      const updatedHabit = {
-        ...habit,
-        streak: habit.streak--,
-        lastCompleted: null,
-      };
+      setStreak(0);
       onEdit(habit.$id, updatedHabit);
     }
   };
+
+  useEffect(() => {
+    handleLooseStreak();
+  }, []);
 
   return (
     <TouchableOpacity
@@ -60,7 +85,7 @@ const HabitItem = ({ habit, onDelete, onEdit }: HabitItemProps) => {
       </View>
       <View
         className={`${isChecked ? 'bg-orange/60' : 'bg-orange/30'} flex h-14 w-14 items-center justify-center rounded-full`}>
-        <Text className="text-white">{habit.streak}</Text>
+        <Text className="text-white">{streak}</Text>
       </View>
     </TouchableOpacity>
   );
