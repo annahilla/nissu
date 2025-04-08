@@ -1,17 +1,12 @@
-import { View, Alert, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, Alert, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import habitsService from '@/services/habitService';
 import { Habit } from '@/types/habits';
 import LoadingScreen from '@/components/ui/LoadingScreen';
-import { Asset } from 'expo-asset';
 import HabitItem from '@/components/habits/HabitItem';
 import BackIcon from '@/assets/back-icon.svg';
-
-const noHouse = Asset.fromModule(require('@/assets/background.png')).uri;
-const oneFloorHouse = Asset.fromModule(
-  require('@/assets/one-floor-house.png')
-).uri;
+import HouseBackground from '@/components/house/HouseBackground';
 
 const HabitScreen = () => {
   const router = useRouter();
@@ -45,21 +40,16 @@ const HabitScreen = () => {
   if (isLoading || !habit) return <LoadingScreen />;
 
   return (
-    <View className="flex-1">
-      <ImageBackground
-        source={{ uri: habit.streak === 0 ? noHouse : oneFloorHouse }}
-        resizeMode="cover"
-        className={`relative flex-1 justify-start`}>
-        <View className="m-4 flex flex-row items-center justify-between gap-4">
-          <TouchableOpacity onPress={() => router.replace('/')}>
-            <BackIcon />
-          </TouchableOpacity>
-          <View className="flex-1">
-            <HabitItem habit={habit} />
-          </View>
+    <HouseBackground habit={habit}>
+      <View className="z-10 flex flex-row items-center justify-between gap-4 p-4">
+        <TouchableOpacity onPress={() => router.replace('/')}>
+          <BackIcon />
+        </TouchableOpacity>
+        <View className="flex-1">
+          <HabitItem habit={habit} />
         </View>
-      </ImageBackground>
-    </View>
+      </View>
+    </HouseBackground>
   );
 };
 
