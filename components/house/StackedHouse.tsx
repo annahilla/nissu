@@ -1,4 +1,4 @@
-import { ScrollView, Image, View } from 'react-native';
+import { ScrollView, Image, View, Text } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import BottomHouse from '@/assets/bottom-house.png';
 import TopHouse from '@/assets/top-house.png';
@@ -7,6 +7,9 @@ import OneFloorHouse from '@/assets/one-floor.png';
 import TwoFloorHouse from '@/assets/two-floors.png';
 import NoHouse from '@/assets/no-house.png';
 import { Habit } from '@/types/habits';
+import Cat from '@/assets/cat.svg';
+import TextBubbleBackground from '../ui/TextBubbleBackground';
+import CatMessage from './CatMessage';
 
 const StackedHouse = ({ habit }: { habit: Habit }) => {
   const scrollViewRef = useRef<ScrollView>(null);
@@ -46,9 +49,11 @@ const StackedHouse = ({ habit }: { habit: Habit }) => {
       showsVerticalScrollIndicator={false}
       onContentSizeChange={onContentSizeChange}>
       {habit.streak < 3 ? (
-        <View className="absolute bottom-0 left-1/2 -translate-x-1/2 transform">
-          <Image source={getHouseImage(habit)} />
-        </View>
+        <>
+          <View className="absolute bottom-0 left-1/2 -translate-x-1/2 transform">
+            <Image source={getHouseImage(habit)} />
+          </View>
+        </>
       ) : (
         <>
           <Image source={TopHouse} />

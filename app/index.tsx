@@ -1,10 +1,9 @@
-import { Alert, Text, View } from 'react-native';
+import { Alert, Keyboard, Text, View } from 'react-native';
 import { useState, useEffect } from 'react';
 import habitsService from '@/services/habitService';
 import { Habit } from '@/types/habits';
 import HabitInput from '@/components/habits/HabitInput';
 import BackgroundLayout from '@/components/layout/BackgroundLayout';
-import Spinner from '@/components/ui/Spinner';
 import HabitList from '@/components/habits/HabitList';
 import Button from '@/components/ui/Button';
 import HabitsHeader from '@/components/layout/Header';
@@ -22,6 +21,21 @@ const HomeScreen = () => {
   const [newHabit, setNewHabit] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isAddingNewHabit, setIsAddingNewHabit] = useState(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -130,7 +144,11 @@ const HomeScreen = () => {
         </BackgroundLayout>
       ) : (
         <CustomImageBackground className="relative flex-1">
-          <TextBubbleBackground>
+          <TextBubbleBackground
+            size={380}
+            style={{
+              marginBottom: keyboardVisible && 80,
+            }}>
             <Text className="text-center text-lg">
               Hi, I am Nissu. Create your first habit to start counting streaks!
             </Text>
