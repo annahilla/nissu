@@ -1,10 +1,4 @@
-import {
-  ImageBackground,
-  StyleSheet,
-  Animated,
-  Easing,
-  View,
-} from 'react-native';
+import { ImageBackground, StyleSheet, Animated, Easing } from 'react-native';
 import { useEffect, useRef } from 'react';
 import clouds from '@/assets/clouds.png';
 import {

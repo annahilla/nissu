@@ -6,7 +6,8 @@ import { Habit } from '@/types/habits';
 import LoadingScreen from '@/components/ui/LoadingScreen';
 import HabitItem from '@/components/habits/HabitItem';
 import BackIcon from '@/assets/back-icon.svg';
-import HouseBackground from '@/components/house/HouseBackground';
+import CloudsBackground from '@/components/house/CloudsBackground';
+import StackedHouse from '@/components/house/StackedHouse';
 
 const HabitScreen = () => {
   const router = useRouter();
@@ -40,16 +41,21 @@ const HabitScreen = () => {
   if (isLoading || !habit) return <LoadingScreen />;
 
   return (
-    <HouseBackground habit={habit}>
-      <View className="z-10 flex flex-row items-center justify-between gap-4 p-4">
-        <TouchableOpacity onPress={() => router.replace('/')}>
-          <BackIcon />
-        </TouchableOpacity>
-        <View className="flex-1">
-          <HabitItem habit={habit} />
+    <View className="relative flex-1">
+      <CloudsBackground />
+
+      <View className="absolute z-10 w-full">
+        <View className="flex flex-row items-center justify-between gap-4 p-4">
+          <TouchableOpacity onPress={() => router.replace('/')}>
+            <BackIcon />
+          </TouchableOpacity>
+          <View className="flex-1">
+            <HabitItem habit={habit} />
+          </View>
         </View>
       </View>
-    </HouseBackground>
+      <StackedHouse habit={habit} />
+    </View>
   );
 };
 
