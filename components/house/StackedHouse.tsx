@@ -5,13 +5,14 @@ import TopHouse from '@/assets/top-house.png';
 import CenterFloor from '@/assets/center-floor.png';
 import OneFloorHouse from '@/assets/one-floor.png';
 import TwoFloorHouse from '@/assets/two-floors.png';
+import NoHouse from '@/assets/no-house.png';
 import { Habit } from '@/types/habits';
 
 const StackedHouse = ({ habit }: { habit: Habit }) => {
   const scrollViewRef = useRef<ScrollView>(null);
   const getHouseImage = (habit: Habit) => {
     if (habit.streak === 0) {
-      return null;
+      return NoHouse;
     } else if (habit.streak === 1) {
       return OneFloorHouse;
     } else if (habit.streak === 2) {

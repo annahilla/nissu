@@ -1,6 +1,13 @@
-import { View, Alert, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Alert,
+  TouchableOpacity,
+  PanResponder,
+  GestureResponderEvent,
+  PanResponderGestureState,
+} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import habitsService from '@/services/habitService';
 import { Habit } from '@/types/habits';
 import LoadingScreen from '@/components/ui/LoadingScreen';
@@ -14,6 +21,28 @@ const HabitScreen = () => {
   const { id } = useLocalSearchParams();
   const [habit, setHabit] = useState<Habit | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (
+        _: GestureResponderEvent,
+        gestureState: PanResponderGestureState
+      ) => {
+        return (
+          Math.abs(gestureState.dx) > Math.abs(gestureState.dy) &&
+          Math.abs(gestureState.dx) > 20
+        );
+      },
+      onPanResponderRelease: (
+        _: GestureResponderEvent,
+        gestureState: PanResponderGestureState
+      ) => {
+        if (gestureState.dx > 50) {
+          router.replace('/');
+        }
+      },
+    })
+  ).current;
 
   useEffect(() => {
     fetchHabit();
@@ -41,7 +70,7 @@ const HabitScreen = () => {
   if (isLoading || !habit) return <LoadingScreen />;
 
   return (
-    <View className="relative flex-1">
+    <View className="relative flex-1" {...panResponder.panHandlers}>
       <CloudsBackground />
 
       <View className="absolute z-10 w-full">
