@@ -91,10 +91,11 @@ const CatMessage = ({ habit }: { habit: Habit }) => {
       </Animated.View>
 
       <View
-        className="absolute"
         style={{
+          position: 'absolute',
           bottom: 80,
           right: isBubbleShowing ? 5 : 55,
+          zIndex: 1,
         }}>
         <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
           <DialogBubble size="small" width={isBubbleShowing ? 170 : undefined}>

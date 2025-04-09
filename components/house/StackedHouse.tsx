@@ -1,5 +1,5 @@
 import { ScrollView, Image, View } from 'react-native';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import BottomHouse from '@/assets/bottom-house.png';
 import TopHouse from '@/assets/top-house.png';
 import CenterFloor from '@/assets/center-floor.png';
@@ -37,11 +37,12 @@ const StackedHouse = ({ habit }: { habit: Habit }) => {
       ref={scrollViewRef}
       contentContainerStyle={{
         flexGrow: 1,
-        justifyContent: 'flex-start',
+        justifyContent: 'flex-end',
         paddingTop: 120,
         flexDirection: 'column',
         alignItems: 'center',
       }}
+      style={{ flex: 1 }}
       contentInsetAdjustmentBehavior="always"
       showsVerticalScrollIndicator={false}
       onContentSizeChange={onContentSizeChange}>
@@ -52,13 +53,13 @@ const StackedHouse = ({ habit }: { habit: Habit }) => {
           </View>
         </>
       ) : (
-        <View className="absolute bottom-0">
+        <>
           <Image source={TopHouse} />
           {Array.from({ length: habit.streak - 3 }).map((_, index) => (
             <Image key={index} source={CenterFloor} />
           ))}
-          <Image source={BottomHouse} />
-        </View>
+          <Image className="-mt-1" source={BottomHouse} />
+        </>
       )}
     </ScrollView>
   );
