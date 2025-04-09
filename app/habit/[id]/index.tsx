@@ -5,9 +5,10 @@ import {
   PanResponder,
   GestureResponderEvent,
   PanResponderGestureState,
+  BackHandler,
 } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import habitsService from '@/services/habitService';
 import { Habit } from '@/types/habits';
 import LoadingScreen from '@/components/ui/LoadingScreen';
@@ -15,7 +16,6 @@ import HabitItem from '@/components/habits/HabitItem';
 import BackIcon from '@/assets/back-icon.svg';
 import CloudsBackground from '@/components/house/CloudsBackground';
 import StackedHouse from '@/components/house/StackedHouse';
-import Cat from '@/assets/cat.svg';
 import CatMessage from '@/components/house/CatMessage';
 
 const HabitScreen = () => {
@@ -23,6 +23,20 @@ const HabitScreen = () => {
   const { id } = useLocalSearchParams();
   const [habit, setHabit] = useState<Habit | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        router.replace('/');
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [router])
+  );
 
   const panResponder = useRef(
     PanResponder.create({
