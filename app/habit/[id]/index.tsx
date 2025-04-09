@@ -13,7 +13,7 @@ import habitsService from '@/services/habitService';
 import { Habit } from '@/types/habits';
 import LoadingScreen from '@/components/ui/LoadingScreen';
 import HabitItem from '@/components/habits/HabitItem';
-import BackIcon from '@/assets/back-icon.svg';
+import BackIcon from '@/assets/icons/back-icon.svg';
 import CloudsBackground from '@/components/house/CloudsBackground';
 import StackedHouse from '@/components/house/StackedHouse';
 import CatMessage from '@/components/house/CatMessage';

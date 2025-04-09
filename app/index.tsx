@@ -9,7 +9,7 @@ import Button from '@/components/ui/Button';
 import HabitsHeader from '@/components/layout/Header';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'expo-router';
-import Cat from '@/assets/cat.svg';
+import Cat from '@/assets/cats/cat.svg';
 import CustomImageBackground from '@/components/layout/CustomImageBackground';
 import LoadingScreen from '@/components/ui/LoadingScreen';
 import DialogBubble from '@/components/ui/DialogBubble';

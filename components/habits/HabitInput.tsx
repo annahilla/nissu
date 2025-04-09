@@ -1,5 +1,5 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import X from '@/assets/X.svg';
+import { View, TextInput, TouchableOpacity } from 'react-native';
+import X from '@/assets/icons/X.svg';
 
 interface HabitInputProps {
   onCancel: () => void;

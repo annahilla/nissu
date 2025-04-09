@@ -1,6 +1,6 @@
 import { ImageBackground, StyleSheet, Animated, Easing } from 'react-native';
 import { useEffect, useRef } from 'react';
-import clouds from '@/assets/clouds.png';
+import clouds from '@/assets/background/clouds.png';
 import {
   ANIMATION_DURATION,
   ANIMATION_TO_VALUE,

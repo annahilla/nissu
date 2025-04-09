@@ -1,6 +1,6 @@
 import { Habit } from '@/types/habits';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
-import Check from '@/assets/check.svg';
+import Check from '@/assets/icons/check.svg';
 import { useEffect, useState } from 'react';
 import { isCompletedToday, wasCompletedYesterday } from '@/utils/streaks';
 import { useLocalSearchParams, useRouter } from 'expo-router';

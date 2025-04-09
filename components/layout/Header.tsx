@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
-import Star from '@/assets/star.svg';
-import HappyCat from '@/assets/happy-cat.svg';
+import Star from '@/assets/icons/star.svg';
+import HappyCat from '@/assets/cats/happy-cat.svg';
 
 const HabitsHeader = () => {
   return (

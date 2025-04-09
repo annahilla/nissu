@@ -1,6 +1,6 @@
 import { View, Text, Pressable, Animated, Easing } from 'react-native';
 import React, { useState, useRef } from 'react';
-import Cat from '@/assets/cat.svg';
+import Cat from '@/assets/cats/cat.svg';
 import { Habit } from '@/types/habits';
 import DialogBubble from '../ui/DialogBubble';
 

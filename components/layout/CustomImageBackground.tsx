@@ -2,9 +2,11 @@ import { View, ImageBackground, TouchableOpacity } from 'react-native';
 import { ReactNode } from 'react';
 import { Asset } from 'expo-asset';
 import { useAuth } from '@/context/AuthContext';
-import Logout from '@/assets/logout.svg';
+import Logout from '@/assets/icons/logout.svg';
 
-const background = Asset.fromModule(require('@/assets/background.png')).uri;
+const background = Asset.fromModule(
+  require('@/assets/background/background.png')
+).uri;
 
 const CustomImageBackground = ({
   children,

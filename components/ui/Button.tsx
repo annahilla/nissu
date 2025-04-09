@@ -1,5 +1,5 @@
 import { TouchableOpacity, Text } from 'react-native';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 interface ButtonProps {
   children: ReactNode;

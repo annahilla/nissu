@@ -1,11 +1,11 @@
 import { ScrollView, Image, View } from 'react-native';
 import { useEffect, useRef } from 'react';
-import BottomHouse from '@/assets/bottom-house.png';
-import TopHouse from '@/assets/top-house.png';
-import CenterFloor from '@/assets/center-floor.png';
-import OneFloorHouse from '@/assets/one-floor.png';
-import TwoFloorHouse from '@/assets/two-floors.png';
-import NoHouse from '@/assets/no-house.png';
+import BottomHouse from '@/assets/house/bottom-house.png';
+import TopHouse from '@/assets/house/top-house.png';
+import CenterFloor from '@/assets/house/center-floor.png';
+import OneFloorHouse from '@/assets/house/one-floor.png';
+import TwoFloorHouse from '@/assets/house/two-floors.png';
+import NoHouse from '@/assets/house/no-house.png';
 import { Habit } from '@/types/habits';
 
 const StackedHouse = ({ habit }: { habit: Habit }) => {
