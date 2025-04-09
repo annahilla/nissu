@@ -11,8 +11,8 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'expo-router';
 import Cat from '@/assets/cat.svg';
 import CustomImageBackground from '@/components/layout/CustomImageBackground';
-import TextBubbleBackground from '@/components/ui/TextBubbleBackground';
 import LoadingScreen from '@/components/ui/LoadingScreen';
+import DialogBubble from '@/components/ui/DialogBubble';
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -143,33 +143,35 @@ const HomeScreen = () => {
           )}
         </BackgroundLayout>
       ) : (
-        <CustomImageBackground className="relative flex-1">
-          <TextBubbleBackground
-            size={380}
+        <CustomImageBackground className="relative items-center justify-center">
+          <View
             style={{
-              marginBottom: keyboardVisible && 80,
+              marginBottom: keyboardVisible ? 80 : 0,
             }}>
-            <Text className="text-center text-lg">
-              Hi, I am Nissu. Create your first habit to start counting streaks!
-            </Text>
-            {isAddingNewHabit ? (
-              <View className="w-full">
-                <HabitInput
-                  onCancel={() => setIsAddingNewHabit(false)}
-                  newHabit={newHabit}
-                  setNewHabit={setNewHabit}
-                  addHabit={addHabit}
-                />
+            <DialogBubble>
+              <Text className="text-center text-lg">
+                Hi, I am Nissu. Create your first habit to start counting
+                streaks!
+              </Text>
+              <View style={{ marginTop: 20, width: '80%' }}>
+                {isAddingNewHabit ? (
+                  <HabitInput
+                    onCancel={() => setIsAddingNewHabit(false)}
+                    newHabit={newHabit}
+                    setNewHabit={setNewHabit}
+                    addHabit={addHabit}
+                  />
+                ) : (
+                  <Button
+                    onPress={() => setIsAddingNewHabit(true)}
+                    variant="outline"
+                    color="green">
+                    +
+                  </Button>
+                )}
               </View>
-            ) : (
-              <Button
-                onPress={() => setIsAddingNewHabit(true)}
-                variant="outline"
-                color="green">
-                +
-              </Button>
-            )}
-          </TextBubbleBackground>
+            </DialogBubble>
+          </View>
 
           <View className="absolute bottom-2 right-4">
             <Cat />
