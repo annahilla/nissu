@@ -1,9 +1,8 @@
 import { Alert, Keyboard, Text, View } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import habitsService from '@/services/habitService';
 import { Habit } from '@/types/habits';
 import HabitInput from '@/components/habits/HabitInput';
-import BackgroundLayout from '@/components/layout/BackgroundLayout';
 import HabitList from '@/components/habits/HabitList';
 import Button from '@/components/ui/Button';
 import HabitsHeader from '@/components/layout/Header';
@@ -13,6 +12,8 @@ import Cat from '@/assets/cats/cat.svg';
 import CustomImageBackground from '@/components/layout/CustomImageBackground';
 import LoadingScreen from '@/components/ui/LoadingScreen';
 import DialogBubble from '@/components/ui/DialogBubble';
+import { Container } from '@/components/layout/Container';
+import { getRandomCat, getRandomPosition } from '@/consts/cats';
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -22,6 +23,8 @@ const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAddingNewHabit, setIsAddingNewHabit] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const randomPosition = useMemo(() => getRandomPosition(), []);
+  const randomCat = useMemo(() => getRandomCat(), []);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -119,29 +122,34 @@ const HomeScreen = () => {
   return (
     <>
       {habits.length > 0 ? (
-        <BackgroundLayout className="relative h-[56%]">
-          <HabitsHeader />
-          <HabitList
-            habits={habits}
-            updateHabit={updateHabit}
-            deleteHabit={deleteHabit}
-          />
-          {isAddingNewHabit ? (
-            <HabitInput
-              onCancel={() => setIsAddingNewHabit(false)}
-              newHabit={newHabit}
-              setNewHabit={setNewHabit}
-              addHabit={addHabit}
+        <CustomImageBackground className="relative">
+          <Container className="h-[56%]">
+            <HabitsHeader />
+            <HabitList
+              habits={habits}
+              updateHabit={updateHabit}
+              deleteHabit={deleteHabit}
             />
-          ) : (
-            <Button
-              onPress={() => setIsAddingNewHabit(true)}
-              variant="outline"
-              color="green">
-              +
-            </Button>
-          )}
-        </BackgroundLayout>
+            {isAddingNewHabit ? (
+              <HabitInput
+                onCancel={() => setIsAddingNewHabit(false)}
+                newHabit={newHabit}
+                setNewHabit={setNewHabit}
+                addHabit={addHabit}
+              />
+            ) : (
+              <Button
+                onPress={() => setIsAddingNewHabit(true)}
+                variant="outline"
+                color="green">
+                +
+              </Button>
+            )}
+          </Container>
+          <View style={[{ position: 'absolute' }, randomPosition]}>
+            {randomCat}
+          </View>
+        </CustomImageBackground>
       ) : (
         <CustomImageBackground className="relative items-center justify-center">
           <View
