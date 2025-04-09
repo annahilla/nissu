@@ -6,38 +6,56 @@ import DialogBubble from '../ui/DialogBubble';
 
 const CatMessage = ({ habit }: { habit: Habit }) => {
   const [isBubbleShowing, setIsBubbleShowing] = useState(false);
-  const [showMessage, setShowMessage] = useState(false); // controla quin contingut mostrar
+  const [showMessage, setShowMessage] = useState(false);
+
   const scaleAnim = useRef(new Animated.Value(1)).current;
+  const tiltAnim = useRef(new Animated.Value(0)).current;
+
+  const wiggle = () => {
+    tiltAnim.setValue(0);
+    Animated.sequence([
+      Animated.timing(tiltAnim, {
+        toValue: 1,
+        duration: 100,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }),
+      Animated.timing(tiltAnim, {
+        toValue: 0,
+        duration: 100,
+        easing: Easing.in(Easing.ease),
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  const scaleBubble = () => {
+    Animated.timing(scaleAnim, {
+      toValue: 1,
+      duration: 250,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true,
+    }).start();
+  };
 
   const toggleBubble = () => {
+    wiggle();
     if (isBubbleShowing) {
-      // Animació de sortida
       Animated.timing(scaleAnim, {
         toValue: 0,
         duration: 250,
         easing: Easing.in(Easing.ease),
         useNativeDriver: true,
       }).start(() => {
-        // Després de desaparèixer, canvia el contingut i torna a aparèixer
         setIsBubbleShowing(false);
         setShowMessage(false);
-        Animated.timing(scaleAnim, {
-          toValue: 1,
-          duration: 250,
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: true,
-        }).start();
+        scaleBubble();
       });
     } else {
       setShowMessage(true);
       setIsBubbleShowing(true);
       scaleAnim.setValue(0);
-      Animated.timing(scaleAnim, {
-        toValue: 1,
-        duration: 250,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }).start();
+      scaleBubble();
     }
   };
 
@@ -59,15 +77,25 @@ const CatMessage = ({ habit }: { habit: Habit }) => {
     }
   };
 
+  const tilt = tiltAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '15deg'],
+  });
+
   return (
     <Pressable onPress={toggleBubble}>
-      <View className="absolute bottom-1 right-2 h-auto">
+      <Animated.View
+        className="absolute bottom-1 right-2"
+        style={{ transform: [{ rotate: tilt }, { scaleX: -1 }] }}>
         <Cat width={80} height={80} />
-      </View>
+      </Animated.View>
 
       <View
         className="absolute"
-        style={{ bottom: 80, right: isBubbleShowing ? 10 : 50 }}>
+        style={{
+          bottom: 80,
+          right: isBubbleShowing ? 5 : 55,
+        }}>
         <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
           <DialogBubble size="small" width={isBubbleShowing ? 170 : undefined}>
             <Text className="text-center">{showMessage ? message() : '!'}</Text>
