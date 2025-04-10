@@ -4,14 +4,15 @@ import Check from '@/assets/icons/check.svg';
 import { useEffect, useState } from 'react';
 import { isCompletedToday, wasCompletedYesterday } from '@/utils/streaks';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import EditHabitModal from './EditHabitModal';
+import { useHabits } from '@/context/HabitContext';
 
 interface HabitItemProps {
   habit: Habit;
-  onDelete?: (id: string) => void;
-  onEdit?: (id: string, updatedHabit: Habit) => void;
 }
 
-const HabitItem = ({ habit, onDelete, onEdit }: HabitItemProps) => {
+const HabitItem = ({ habit }: HabitItemProps) => {
+  const { updateHabit } = useHabits();
   const { id: currentId } = useLocalSearchParams();
   const router = useRouter();
   const today = new Date();
@@ -23,9 +24,10 @@ const HabitItem = ({ habit, onDelete, onEdit }: HabitItemProps) => {
 
   const [isChecked, setIsChecked] = useState(completed);
   const [streak, setStreak] = useState(habit.streak);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [updatedHabit, setUpdatedHabit] = useState(habit.name);
 
   const handleCheck = () => {
-    if (!onEdit) return;
     let newStreak = streak;
     let newLastCompleted = habit.lastCompleted;
 
@@ -50,11 +52,10 @@ const HabitItem = ({ habit, onDelete, onEdit }: HabitItemProps) => {
       lastCompleted: newLastCompleted,
     };
 
-    onEdit(habit.$id, updatedHabit);
+    updateHabit(habit.$id, updatedHabit);
   };
 
   const handleLooseStreak = () => {
-    if (!onEdit) return;
     const isStreakCurrent = habit.lastCompleted
       ? wasCompletedYesterday(habit.lastCompleted) ||
         isCompletedToday(habit.lastCompleted)
@@ -67,7 +68,7 @@ const HabitItem = ({ habit, onDelete, onEdit }: HabitItemProps) => {
         streak: 0,
       };
       setStreak(0);
-      onEdit(habit.$id, updatedHabit);
+      updateHabit(habit.$id, updatedHabit);
     }
   };
 
@@ -82,30 +83,40 @@ const HabitItem = ({ habit, onDelete, onEdit }: HabitItemProps) => {
   };
 
   return (
-    <TouchableOpacity
-      onPress={handleNavigation}
-      onLongPress={() => onDelete?.(habit.$id)}
-      className="my-2 flex h-[3.8rem] w-full flex-row items-center justify-between rounded-full border border-2 border-green bg-beige">
-      <View className="flex flex-row items-center gap-2">
-        {isChecked ? (
-          <TouchableOpacity
-            onPress={handleCheck}
-            className="m-1 flex h-12 w-12 items-center justify-center rounded-full">
-            <Check />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={handleCheck}
-            className="m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 border-green"></TouchableOpacity>
-        )}
+    <>
+      <TouchableOpacity
+        onPress={handleNavigation}
+        onLongPress={() => setIsModalOpen(true)}
+        className="my-2 flex h-[3.8rem] w-full flex-row items-center justify-between rounded-full border border-2 border-green bg-beige">
+        <View className="flex flex-row items-center gap-2">
+          {isChecked ? (
+            <TouchableOpacity
+              onPress={handleCheck}
+              className="m-1 flex h-12 w-12 items-center justify-center rounded-full">
+              <Check />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={handleCheck}
+              className="m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 border-green"></TouchableOpacity>
+          )}
 
-        <Text className="max-w-28 text-lg">{habit.name}</Text>
-      </View>
-      <View
-        className={`${isChecked ? 'bg-orange' : 'bg-lightOrange'} flex h-14 w-14 items-center justify-center rounded-full`}>
-        <Text className="text-white">{streak}</Text>
-      </View>
-    </TouchableOpacity>
+          <Text className="max-w-28 text-lg">{updatedHabit}</Text>
+        </View>
+        <View
+          className={`${isChecked ? 'bg-orange' : 'bg-lightOrange'} flex h-14 w-14 items-center justify-center rounded-full`}>
+          <Text className="text-white">{streak}</Text>
+        </View>
+      </TouchableOpacity>
+
+      <EditHabitModal
+        updatedHabit={updatedHabit}
+        setUpdatedHabit={setUpdatedHabit}
+        isModalOpen={isModalOpen}
+        habit={habit}
+        setIsModalOpen={setIsModalOpen}
+      />
+    </>
   );
 };
 

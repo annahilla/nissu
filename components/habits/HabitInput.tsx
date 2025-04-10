@@ -1,19 +1,14 @@
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import X from '@/assets/icons/X.svg';
+import { useHabits } from '@/context/HabitContext';
 
-interface HabitInputProps {
-  onCancel: () => void;
-  newHabit: string;
-  setNewHabit: (item: string) => void;
-  addHabit: () => void;
-}
+const HabitInput = () => {
+  const { newHabit, setNewHabit, addHabit, setIsAddingNewHabit } = useHabits();
 
-const HabitInput = ({
-  onCancel,
-  newHabit,
-  setNewHabit,
-  addHabit,
-}: HabitInputProps) => {
+  const onCancel = () => {
+    setIsAddingNewHabit(false);
+  };
+
   return (
     <View className="flex h-[3.8rem] w-full flex-row items-center justify-between rounded-full border border-2 border-green">
       <View className="flex flex-row items-center gap-2">

@@ -4,18 +4,14 @@ import { Habit } from '@/types/habits';
 
 interface HabitListProps {
   habits: Habit[];
-  deleteHabit: (id: string) => void;
-  updateHabit: (id: string, updatedHabit: Habit) => void;
 }
 
-const HabitList = ({ habits, updateHabit, deleteHabit }: HabitListProps) => {
+const HabitList = ({ habits }: HabitListProps) => {
   return (
     <FlatList
       data={habits}
       keyExtractor={(item) => item.$id}
-      renderItem={({ item }) => (
-        <HabitItem habit={item} onEdit={updateHabit} onDelete={deleteHabit} />
-      )}
+      renderItem={({ item }) => <HabitItem habit={item} />}
       showsVerticalScrollIndicator={false}
     />
   );
