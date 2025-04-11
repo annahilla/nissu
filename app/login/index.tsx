@@ -93,7 +93,9 @@ const LoginScreen = () => {
         )}
       </View>
 
-      <Button onPress={handleAuth}>{isRegistering ? 'Create' : 'Login'}</Button>
+      <Button className="w-full" onPress={handleAuth}>
+        {isRegistering ? 'Create' : 'Login'}
+      </Button>
 
       <View className="flex items-center justify-center gap-4">
         <Text className="text-darkGray">

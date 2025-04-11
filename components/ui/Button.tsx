@@ -6,6 +6,7 @@ interface ButtonProps {
   variant?: 'outline' | 'fill';
   color?: 'green' | 'brown';
   round?: boolean;
+  className?: string;
   onPress: () => void;
 }
 
@@ -14,6 +15,7 @@ const Button = ({
   variant = 'fill',
   color = 'brown',
   round = false,
+  className,
   onPress,
 }: ButtonProps) => {
   const backgroundColors = {
@@ -31,11 +33,13 @@ const Button = ({
     brown: 'text-brown',
   };
 
+  const padding = round ? 'h-[3.8rem] w-[3.8rem]' : 'px-6 py-3';
+
   if (variant === 'outline') {
     return (
       <TouchableOpacity
         onPress={onPress}
-        className={`m-auto flex items-center justify-center rounded-full border border-2 ${round ? 'h-[3.8rem] w-[3.8rem]' : 'flex-1 p-2'} ${borderColors[color]}`}>
+        className={`${className} m-auto flex items-center justify-center rounded-full border border-2 ${borderColors[color]} ${padding}`}>
         <Text
           className={`${round ? 'text-2xl' : 'text-lg'} ${textColors[color]}`}>
           {children}
@@ -47,7 +51,7 @@ const Button = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`m-auto flex flex-1 items-center justify-center rounded-full p-2 ${backgroundColors[color]}`}>
+      className={`${className} m-auto flex items-center justify-center rounded-full ${padding} ${backgroundColors[color]}`}>
       <Text className="text-lg font-semibold text-beige">{children}</Text>
     </TouchableOpacity>
   );

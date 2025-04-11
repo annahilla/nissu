@@ -46,11 +46,14 @@ const EditHabitModal = ({
         />
         <View className="flex flex-row justify-center gap-4">
           <Button
+            className="flex-1"
             variant="outline"
             onPress={() => setIsConfirmDeleteModalOpen(true)}>
             Delete
           </Button>
-          <Button onPress={saveUpdatedHabit}>Save</Button>
+          <Button className="flex-1" onPress={saveUpdatedHabit}>
+            Save
+          </Button>
         </View>
       </CustomModal>
       <CustomModal
@@ -59,13 +62,16 @@ const EditHabitModal = ({
         <Text className="mt-5 text-center text-lg">
           Are you sure you want to delete this habit?
         </Text>
-        <View className="flex flex-row justify-center gap-4">
+        <View className="flex flex-row gap-4">
           <Button
+            className="flex-1"
             variant="outline"
             onPress={() => setIsConfirmDeleteModalOpen(false)}>
             No
           </Button>
-          <Button onPress={() => deleteHabit(habit.$id)}>Yes</Button>
+          <Button className="flex-1" onPress={() => deleteHabit(habit.$id)}>
+            Yes
+          </Button>
         </View>
       </CustomModal>
     </>
