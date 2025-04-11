@@ -15,7 +15,7 @@ interface HabitItemProps {
 
 const HabitItem = ({ habit }: HabitItemProps) => {
   const { user } = useAuth();
-  const { habits, updateHabit } = useHabits();
+  const { updateHabit } = useHabits();
   const { updateStreakProtector, streakProtector } = useStreakProtector();
   const { id: currentId } = useLocalSearchParams();
   const router = useRouter();
@@ -35,13 +35,17 @@ const HabitItem = ({ habit }: HabitItemProps) => {
     let newStreak = streak;
     let newLastCompleted = habit.lastCompleted;
 
+    const wasMultipleOf7 = streak > 0 && streak % 7 === 0;
+
     if (!isChecked) {
-      newStreak = streak + 1;
+      newStreak += 1;
       newLastCompleted = today;
     } else if (streak > 0) {
-      newStreak = streak - 1;
+      newStreak -= 1;
       newLastCompleted = newStreak === 0 ? null : yesterday;
     }
+
+    const isNowMultipleOf7 = newStreak > 0 && newStreak % 7 === 0;
 
     const updatedHabitObject = {
       ...habit,
@@ -49,27 +53,24 @@ const HabitItem = ({ habit }: HabitItemProps) => {
       lastCompleted: newLastCompleted,
     };
 
-    // Actualitza localment
     setStreak(newStreak);
     setIsChecked((prev) => !prev);
-
-    // Actualitza al backend
     await updateHabit(habit.$id, updatedHabitObject);
 
-    // Genera una nova llista d'hàbits amb aquest hàbit actualitzat manualment
-    const allUpdatedHabits = habits.map((h) =>
-      h.$id === habit.$id ? updatedHabitObject : h
-    );
+    if (!user) return;
 
-    // Calcula els protectors
-    const protectorCount = allUpdatedHabits.filter(
-      (h) => h.streak > 0 && h.streak % 7 === 0
-    ).length;
-
-    if (user) {
+    if (!isChecked && isNowMultipleOf7) {
       updateStreakProtector(streakProtector.$id, {
         userId: user.$id,
-        value: protectorCount,
+        value: streakProtector.value + 1,
+        $id: streakProtector.$id,
+      });
+    }
+
+    if (isChecked && wasMultipleOf7) {
+      updateStreakProtector(streakProtector.$id, {
+        userId: user.$id,
+        value: Math.max(streakProtector.value - 1, 0),
         $id: streakProtector.$id,
       });
     }
