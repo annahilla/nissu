@@ -9,3 +9,9 @@ export interface User {
   $id: string;
   email: string;
 }
+
+export interface StreakProtector {
+  $id: string;
+  value: number;
+  userId: string;
+}

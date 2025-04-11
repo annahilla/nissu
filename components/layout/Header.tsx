@@ -1,14 +1,11 @@
-import { View, Text } from 'react-native';
-import Star from '@/assets/icons/star.svg';
+import { View } from 'react-native';
 import HappyCat from '@/assets/cats/happy-cat.svg';
+import StreakProtector from '../habits/StreakProtector';
 
 const HabitsHeader = () => {
   return (
     <View className="flex flex-row items-center justify-between">
-      <View className="flex flex-row items-center gap-2">
-        <Star width={24} height={24} />
-        <Text className="text-brown">4</Text>
-      </View>
+      <StreakProtector />
       <HappyCat width={24} height={24} />
     </View>
   );

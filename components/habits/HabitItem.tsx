@@ -6,13 +6,17 @@ import { isCompletedToday, wasCompletedYesterday } from '@/utils/streaks';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import EditHabitModal from './EditHabitModal';
 import { useHabits } from '@/context/HabitContext';
+import { useAuth } from '@/context/AuthContext';
+import { useStreakProtector } from '@/context/StreakProtectorContext';
 
 interface HabitItemProps {
   habit: Habit;
 }
 
 const HabitItem = ({ habit }: HabitItemProps) => {
-  const { updateHabit } = useHabits();
+  const { user } = useAuth();
+  const { habits, updateHabit } = useHabits();
+  const { updateStreakProtector, streakProtector } = useStreakProtector();
   const { id: currentId } = useLocalSearchParams();
   const router = useRouter();
   const today = new Date();
@@ -27,7 +31,7 @@ const HabitItem = ({ habit }: HabitItemProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updatedHabit, setUpdatedHabit] = useState(habit.name);
 
-  const handleCheck = () => {
+  const handleCheck = async () => {
     let newStreak = streak;
     let newLastCompleted = habit.lastCompleted;
 
@@ -36,23 +40,39 @@ const HabitItem = ({ habit }: HabitItemProps) => {
       newLastCompleted = today;
     } else if (streak > 0) {
       newStreak = streak - 1;
-      if (newStreak === 0) {
-        newLastCompleted = null;
-      } else {
-        newLastCompleted = yesterday;
-      }
+      newLastCompleted = newStreak === 0 ? null : yesterday;
     }
 
-    setStreak(newStreak);
-    setIsChecked((prev) => !prev);
-
-    const updatedHabit = {
+    const updatedHabitObject = {
       ...habit,
       streak: newStreak,
       lastCompleted: newLastCompleted,
     };
 
-    updateHabit(habit.$id, updatedHabit);
+    // Actualitza localment
+    setStreak(newStreak);
+    setIsChecked((prev) => !prev);
+
+    // Actualitza al backend
+    await updateHabit(habit.$id, updatedHabitObject);
+
+    // Genera una nova llista d'hàbits amb aquest hàbit actualitzat manualment
+    const allUpdatedHabits = habits.map((h) =>
+      h.$id === habit.$id ? updatedHabitObject : h
+    );
+
+    // Calcula els protectors
+    const protectorCount = allUpdatedHabits.filter(
+      (h) => h.streak > 0 && h.streak % 7 === 0
+    ).length;
+
+    if (user) {
+      updateStreakProtector(streakProtector.$id, {
+        userId: user.$id,
+        value: protectorCount,
+        $id: streakProtector.$id,
+      });
+    }
   };
 
   const handleLooseStreak = () => {

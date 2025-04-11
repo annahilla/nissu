@@ -1,4 +1,3 @@
-import { Habit } from '@/types/habits';
 import { database } from './appwrite';
 
 const databaseService = {
@@ -23,7 +22,7 @@ const databaseService = {
   async createDocument(
     dbId: string,
     colId: string,
-    data: { name: string; streak: number; userId: string },
+    data: any,
     id: string = ''
   ) {
     try {
@@ -33,11 +32,11 @@ const databaseService = {
       return { error: (error as Error).message };
     }
   },
-  async updateDocument(dbId: string, colId: string, id: string, data: Habit) {
+  async updateDocument(dbId: string, colId: string, id: string, data: any) {
     try {
       return await database.updateDocument(dbId, colId, id, data);
     } catch (error) {
-      console.error('Error deleting document:', (error as Error).message);
+      console.error('Error updating document:', (error as Error).message);
       return { error: (error as Error).message };
     }
   },

@@ -1,6 +1,7 @@
 import { Habit } from '@/types/habits';
 import databaseService from './databaseService';
 import { ID, Query } from 'react-native-appwrite';
+import streakProtectorService from './streakProtectorService';
 
 const dbId = process.env.EXPO_PUBLIC_APPWRITE_DB as string;
 const colId = process.env.EXPO_PUBLIC_APPWRITE_COL_HABITS_ID as string;
@@ -69,9 +70,15 @@ const habitsService = {
       return { error: response.error };
     }
 
+    const existingStreak =
+      await streakProtectorService.getStreakProtector(userId);
+    if (existingStreak?.data?.length === 0) {
+      await streakProtectorService.addStreakProtector(userId, 0);
+    }
+
     return { data: response };
   },
-  async updateHabit(id: string, updatedHabit: Habit) {
+  async updateHabit(id: string, updatedHabit: Habit, userId: string) {
     const response = await databaseService.updateDocument(
       dbId,
       colId,

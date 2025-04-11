@@ -60,7 +60,7 @@ const LoginScreen = () => {
       </View>
 
       <View className="flex gap-4">
-        <Text className="text-darkGray text-lg">Welcome!</Text>
+        <Text className="text-lg text-darkGray">Welcome!</Text>
         <TextInput
           className={inputStyles}
           placeholder="Email"

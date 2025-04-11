@@ -1,8 +1,9 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
-import { Habit } from '@/types/habits';
+import { Habit, StreakProtector } from '@/types/habits';
 import { useAuth } from './AuthContext';
 import { Alert } from 'react-native';
 import habitsService from '@/services/habitService';
+import streakProtectorService from '@/services/streakProtectorService';
 
 interface HabitsContextInterface {
   habits: Habit[];
@@ -39,12 +40,12 @@ const HabitsContext = createContext<HabitsContextInterface>({
 });
 
 export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
+  const { user } = useAuth();
   const [habits, setHabits] = useState<Habit[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [newHabit, setNewHabit] = useState('');
   const [updatedHabit, setUpdatedHabit] = useState('');
   const [isAddingNewHabit, setIsAddingNewHabit] = useState(false);
-  const { user } = useAuth();
 
   const fetchHabits = async () => {
     if (user) {
@@ -81,18 +82,24 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
   const updateHabit = async (id: string, updatedHabit: Habit) => {
     const { name, streak, lastCompleted } = updatedHabit;
 
-    const response = await habitsService.updateHabit(id, {
-      name,
-      streak,
-      lastCompleted,
-      $id: id,
-    });
+    if (user) {
+      const response = await habitsService.updateHabit(
+        id,
+        {
+          name,
+          streak,
+          lastCompleted,
+          $id: id,
+        },
+        user?.$id
+      );
 
-    if (response.error) {
-      Alert.alert('Error: ', response.error);
+      if (response.error) {
+        Alert.alert('Error: ', response.error);
+      }
+
+      setUpdatedHabit(name);
     }
-
-    setUpdatedHabit(name);
   };
 
   const deleteHabit = async (id: string) => {
