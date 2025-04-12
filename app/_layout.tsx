@@ -4,6 +4,7 @@ import { colorScheme } from 'nativewind';
 import { AuthProvider } from '@/context/AuthContext';
 import { HabitsProvider } from '@/context/HabitContext';
 import { StreakProtectorProvider } from '@/context/StreakProtectorContext';
+import { MessageProvider } from '@/context/MessageContext';
 
 colorScheme.set('light');
 
@@ -12,14 +13,17 @@ const RootLayout = () => {
     <AuthProvider>
       <HabitsProvider>
         <StreakProtectorProvider>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-            }}>
-            <Stack.Screen name="index" />
-            <Stack.Screen name="login" />
-            <Stack.Screen name="habit/[id]" />
-          </Stack>
+          <MessageProvider>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+              }}>
+              <Stack.Screen name="index" />
+
+              <Stack.Screen name="login" />
+              <Stack.Screen name="habit/[id]" />
+            </Stack>
+          </MessageProvider>
         </StreakProtectorProvider>
       </HabitsProvider>
     </AuthProvider>

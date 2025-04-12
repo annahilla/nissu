@@ -13,10 +13,12 @@ import DialogBubble from '@/components/ui/DialogBubble';
 import { Container } from '@/components/layout/Container';
 import { getRandomCat, getRandomPosition } from '@/consts/cats';
 import { useHabits } from '@/context/HabitContext';
+import { useMessage } from '@/context/MessageContext';
 
 const HomeScreen = () => {
   const router = useRouter();
   const { user, isLoading: authLoading } = useAuth();
+  const { message } = useMessage();
   const {
     habits,
     isLoading,
@@ -60,7 +62,14 @@ const HomeScreen = () => {
     <CustomImageBackground className="relative">
       {habits.length > 0 ? (
         <>
-          <Container className="h-[56%]">
+          {!keyboardVisible && (
+            <View
+              className="absolute m-4 flex h-20 w-[80%] items-center justify-center rounded-xl border border-2 border-brown/80 bg-beige/80 p-4"
+              style={{ top: `${10}%` }}>
+              <Text className="text-center">{message}</Text>
+            </View>
+          )}
+          <Container className={`${keyboardVisible ? 'h-full' : 'h-[56%]'}`}>
             <HabitsHeader />
             <HabitList habits={habits} />
             {isAddingNewHabit ? (
@@ -75,9 +84,11 @@ const HomeScreen = () => {
               </Button>
             )}
           </Container>
-          <View style={[{ position: 'absolute' }, randomPosition]}>
-            {randomCat}
-          </View>
+          {!keyboardVisible && (
+            <View style={[{ position: 'absolute' }, randomPosition]}>
+              {randomCat}
+            </View>
+          )}
         </>
       ) : (
         <>

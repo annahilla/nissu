@@ -8,6 +8,7 @@ import EditHabitModal from './EditHabitModal';
 import { useHabits } from '@/context/HabitContext';
 import { useAuth } from '@/context/AuthContext';
 import { useStreakProtector } from '@/context/StreakProtectorContext';
+import { useMessage } from '@/context/MessageContext';
 
 interface HabitItemProps {
   habit: Habit;
@@ -17,6 +18,7 @@ const HabitItem = ({ habit }: HabitItemProps) => {
   const { user } = useAuth();
   const { updateHabit } = useHabits();
   const { updateStreakProtector, streakProtector } = useStreakProtector();
+  const { setMessage } = useMessage();
   const { id: currentId } = useLocalSearchParams();
   const router = useRouter();
   const today = new Date();
@@ -40,9 +42,11 @@ const HabitItem = ({ habit }: HabitItemProps) => {
     if (!isChecked) {
       newStreak += 1;
       newLastCompleted = today;
+      setMessage("Cool! You've completed one more streak!");
     } else if (streak > 0) {
       newStreak -= 1;
       newLastCompleted = newStreak === 0 ? null : yesterday;
+      setMessage('What? I thought you really completed this one');
     }
 
     const isNowMultipleOf7 = newStreak > 0 && newStreak % 7 === 0;
@@ -65,6 +69,7 @@ const HabitItem = ({ habit }: HabitItemProps) => {
         value: streakProtector.value + 1,
         $id: streakProtector.$id,
       });
+      setMessage('Yaaaaay! You won a streak protector!');
     }
 
     if (isChecked && wasMultipleOf7) {
