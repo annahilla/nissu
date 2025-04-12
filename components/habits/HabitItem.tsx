@@ -1,7 +1,7 @@
 import { Habit } from '@/types/habits';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import Check from '@/assets/icons/check.svg';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { isCompletedToday, wasCompletedYesterday } from '@/utils/streaks';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import EditHabitModal from './EditHabitModal';
@@ -15,6 +15,7 @@ interface HabitItemProps {
 }
 
 const HabitItem = ({ habit }: HabitItemProps) => {
+  const hasShownAlert = useRef(false);
   const { user } = useAuth();
   const { updateHabit } = useHabits();
   const { updateStreakProtector, streakProtector } = useStreakProtector();
@@ -87,7 +88,8 @@ const HabitItem = ({ habit }: HabitItemProps) => {
         isCompletedToday(habit.lastCompleted)
       : false;
 
-    if (!isStreakCurrent && habit.streak > 0) {
+    if (!isStreakCurrent && habit.streak > 0 && !hasShownAlert.current) {
+      hasShownAlert.current = true;
       Alert.alert(`Ohhhhh! You lost the streak for ${habit.name}`);
       const updatedHabit = {
         ...habit,
