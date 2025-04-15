@@ -9,6 +9,7 @@ import {
   OUTPUT_RANGE_END,
   OUTPUT_RANGE_START,
 } from '@/consts/animatedBackground';
+import React from 'react';
 
 const CloudsBackground = () => {
   const initialValue = 0;
@@ -62,4 +63,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CloudsBackground;
+export default React.memo(CloudsBackground);

@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { Asset } from 'expo-asset';
 import { useAuth } from '@/context/AuthContext';
 import Logout from '@/assets/icons/logout.svg';
-import CloudsBackground from '../house/CloudsBackground';
+import CloudsBackground from '../ui/CloudsBackground';
 import NoHouse from '@/assets/house/no-house.png';
 
 const CustomImageBackground = ({
