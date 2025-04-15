@@ -3,31 +3,14 @@ import React, { useState, useRef } from 'react';
 import Cat from '@/assets/cats/cat.svg';
 import { Habit } from '@/types/habits';
 import DialogBubble from '../ui/DialogBubble';
+import { useTilt } from '@/hooks/useTilt';
 
 const CatMessage = ({ habit }: { habit: Habit }) => {
   const [isBubbleShowing, setIsBubbleShowing] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
+  const { tilt, wiggle } = useTilt();
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
-  const tiltAnim = useRef(new Animated.Value(0)).current;
-
-  const wiggle = () => {
-    tiltAnim.setValue(0);
-    Animated.sequence([
-      Animated.timing(tiltAnim, {
-        toValue: 1,
-        duration: 100,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }),
-      Animated.timing(tiltAnim, {
-        toValue: 0,
-        duration: 100,
-        easing: Easing.in(Easing.ease),
-        useNativeDriver: true,
-      }),
-    ]).start();
-  };
 
   const scaleBubble = () => {
     Animated.timing(scaleAnim, {
@@ -76,11 +59,6 @@ const CatMessage = ({ habit }: { habit: Habit }) => {
       return "You built a skyscraper! I'm so proud of you!";
     }
   };
-
-  const tilt = tiltAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '15deg'],
-  });
 
   return (
     <Pressable onPress={toggleBubble}>

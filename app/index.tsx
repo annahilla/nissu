@@ -1,4 +1,4 @@
-import { Keyboard, Text, View } from 'react-native';
+import { Animated, Keyboard, Pressable, Text, View } from 'react-native';
 import { useState, useEffect, useMemo } from 'react';
 import HabitInput from '@/components/habits/HabitInput';
 import HabitList from '@/components/habits/HabitList';
@@ -14,11 +14,13 @@ import { Container } from '@/components/layout/Container';
 import { getRandomCat, getRandomPosition } from '@/consts/cats';
 import { useHabits } from '@/context/HabitContext';
 import { useMessage } from '@/context/MessageContext';
+import { useTilt } from '@/hooks/useTilt';
 
 const HomeScreen = () => {
   const router = useRouter();
   const { user, isLoading: authLoading } = useAuth();
-  const { message } = useMessage();
+  const { message, generateNewMessage } = useMessage();
+  const { tilt, wiggle } = useTilt();
   const {
     habits,
     isLoading,
@@ -85,9 +87,16 @@ const HomeScreen = () => {
             )}
           </Container>
           {!keyboardVisible && (
-            <View style={[{ position: 'absolute' }, randomPosition]}>
-              {randomCat}
-            </View>
+            <Pressable
+              onPress={() => {
+                wiggle();
+                generateNewMessage();
+              }}
+              style={[{ position: 'absolute' }, randomPosition]}>
+              <Animated.View style={{ transform: [{ rotate: tilt }] }}>
+                {randomCat}
+              </Animated.View>
+            </Pressable>
           )}
         </>
       ) : (

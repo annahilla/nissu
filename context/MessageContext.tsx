@@ -9,6 +9,7 @@ import {
 interface MessageContextInterface {
   message: string;
   setMessage: (value: string) => void;
+  generateNewMessage: () => void;
 }
 
 interface MessageProviderInterface {
@@ -19,6 +20,7 @@ const MessageContext = createContext<MessageContextInterface>({
   message:
     "Do you want to build a skyscraper? Let's see for how long you can keep a streak going.",
   setMessage: () => {},
+  generateNewMessage: () => {},
 });
 
 export const MessageProvider = ({ children }: MessageProviderInterface) => {
@@ -37,7 +39,6 @@ export const MessageProvider = ({ children }: MessageProviderInterface) => {
       'Keep up the streak!',
       'Streaks never stop!',
       'Ready, set, go!',
-      'New streak, who’s this?',
       'Stay strong today!',
       'Don’t stop now!',
       'Let’s build that skyscraper!',
@@ -48,12 +49,18 @@ export const MessageProvider = ({ children }: MessageProviderInterface) => {
     return messages[randomIndex];
   };
 
+  const generateNewMessage = () => {
+    const newMessage = generateDailyMessage();
+    setMessage(newMessage);
+  };
+
   useEffect(() => {
     setMessage(generateDailyMessage());
   }, []);
 
   return (
-    <MessageContext.Provider value={{ message, setMessage }}>
+    <MessageContext.Provider
+      value={{ message, setMessage, generateNewMessage }}>
       {children}
     </MessageContext.Provider>
   );
