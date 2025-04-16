@@ -1,3 +1,5 @@
+import { Habit } from '@/types/habits';
+
 export const isCompletedToday = (lastCompleted: Date) => {
   const today = new Date();
   const formattedDate = today.toISOString().split('T')[0];
@@ -17,4 +19,13 @@ export const wasCompletedYesterday = (lastCompleted: Date | string) => {
   const formattedYesterday = yesterday.toISOString().split('T')[0];
 
   return formattedCompleted === formattedYesterday;
+};
+
+export const isStreakLost = (habit: Habit) => {
+  const isStreakCurrent = habit.lastCompleted
+    ? wasCompletedYesterday(habit.lastCompleted) ||
+      isCompletedToday(habit.lastCompleted)
+    : false;
+
+  return !isStreakCurrent && habit.streak > 0 ? true : false;
 };

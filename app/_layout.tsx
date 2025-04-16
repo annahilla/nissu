@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import '../global.css';
 import { colorScheme } from 'nativewind';
 import { AuthProvider } from '@/context/AuthContext';
-import { HabitsProvider } from '@/context/HabitContext';
+import { HabitsProvider } from '@/context/HabitsContext';
 import { StreakProtectorProvider } from '@/context/StreakProtectorContext';
 import { MessageProvider } from '@/context/MessageContext';
 

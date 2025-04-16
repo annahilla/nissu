@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Habit } from '@/types/habits';
 import Button from '../ui/Button';
 import CustomModal from '../ui/Modal';
-import { useHabits } from '@/context/HabitContext';
+import { useHabits } from '@/context/HabitsContext';
 
 interface EditHabitModalProps {
   habit: Habit;

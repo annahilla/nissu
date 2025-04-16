@@ -12,7 +12,7 @@ import LoadingScreen from '@/components/ui/LoadingScreen';
 import DialogBubble from '@/components/ui/DialogBubble';
 import { Container } from '@/components/layout/Container';
 import { getRandomCat, getRandomPosition } from '@/consts/cats';
-import { useHabits } from '@/context/HabitContext';
+import { useHabits } from '@/context/HabitsContext';
 import { useMessage } from '@/context/MessageContext';
 import { useTilt } from '@/hooks/useTilt';
 
@@ -71,7 +71,7 @@ const HomeScreen = () => {
               <Text className="text-center">{message}</Text>
             </View>
           )}
-          <Container className={`${keyboardVisible ? 'h-full' : 'h-[56%]'}`}>
+          <Container className={`${keyboardVisible ? 'h-auto' : 'h-[56%]'}`}>
             <HabitsHeader />
             <HabitList habits={habits} />
             {isAddingNewHabit ? (

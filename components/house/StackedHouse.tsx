@@ -7,9 +7,14 @@ import OneFloorHouse from '@/assets/house/one-floor.png';
 import TwoFloorHouse from '@/assets/house/two-floors.png';
 import NoHouse from '@/assets/house/no-house.png';
 import { Habit } from '@/types/habits';
+import { useHabit } from '@/context/HabitContext';
+import LoadingScreen from '../ui/LoadingScreen';
+import StreakLostHouse from './StreakLostHouse';
 
-const StackedHouse = ({ habit }: { habit: Habit }) => {
+const StackedHouse = () => {
+  const { habit, isLostStreak } = useHabit();
   const scrollViewRef = useRef<ScrollView>(null);
+
   const getHouseImage = (habit: Habit) => {
     if (habit.streak === 0) {
       return NoHouse;
@@ -32,6 +37,8 @@ const StackedHouse = ({ habit }: { habit: Habit }) => {
     }
   };
 
+  if (!habit) return <LoadingScreen />;
+
   return (
     <ScrollView
       ref={scrollViewRef}
@@ -46,12 +53,14 @@ const StackedHouse = ({ habit }: { habit: Habit }) => {
       contentInsetAdjustmentBehavior="always"
       showsVerticalScrollIndicator={false}
       onContentSizeChange={onContentSizeChange}>
-      {habit.streak < 3 ? (
-        <>
+      {isLostStreak ? (
+        <StreakLostHouse />
+      ) : habit.streak < 3 ? (
+        <View className="relative h-full w-full flex-1">
           <View className="absolute bottom-0 left-1/2 -translate-x-1/2 transform">
             <Image source={getHouseImage(habit)} />
           </View>
-        </>
+        </View>
       ) : (
         <>
           <Image source={TopHouse} />

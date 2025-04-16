@@ -1,21 +1,22 @@
 import { Habit } from '@/types/habits';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import Check from '@/assets/icons/check.svg';
-import { useEffect, useRef, useState } from 'react';
-import { isCompletedToday, wasCompletedYesterday } from '@/utils/streaks';
+import { useEffect, useState } from 'react';
+import { isCompletedToday, isStreakLost } from '@/utils/streaks';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import EditHabitModal from './EditHabitModal';
-import { useHabits } from '@/context/HabitContext';
+import { useHabits } from '@/context/HabitsContext';
 import { useAuth } from '@/context/AuthContext';
 import { useStreakProtector } from '@/context/StreakProtectorContext';
 import { useMessage } from '@/context/MessageContext';
 
-interface HabitItemProps {
+const HabitItem = ({
+  habit,
+  currentStreak,
+}: {
   habit: Habit;
-}
-
-const HabitItem = ({ habit }: HabitItemProps) => {
-  const hasShownAlert = useRef(false);
+  currentStreak?: number;
+}) => {
   const { user } = useAuth();
   const { updateHabit } = useHabits();
   const { updateStreakProtector, streakProtector } = useStreakProtector();
@@ -83,20 +84,10 @@ const HabitItem = ({ habit }: HabitItemProps) => {
   };
 
   const handleLooseStreak = () => {
-    const isStreakCurrent = habit.lastCompleted
-      ? wasCompletedYesterday(habit.lastCompleted) ||
-        isCompletedToday(habit.lastCompleted)
-      : false;
+    const isLostStreak = isStreakLost(habit);
 
-    if (!isStreakCurrent && habit.streak > 0 && !hasShownAlert.current) {
-      hasShownAlert.current = true;
-      Alert.alert(`Ohhhhh! You lost the streak for ${habit.name}`);
-      const updatedHabit = {
-        ...habit,
-        streak: 0,
-      };
-      setStreak(0);
-      updateHabit(habit.$id, updatedHabit);
+    if (isLostStreak) {
+      //router.push(`/habit/${habit.$id}`);
     }
   };
 
@@ -133,7 +124,9 @@ const HabitItem = ({ habit }: HabitItemProps) => {
         </View>
         <View
           className={`${isChecked ? 'bg-orange' : 'bg-lightOrange'} flex h-14 w-14 items-center justify-center rounded-full`}>
-          <Text className="text-white">{streak}</Text>
+          <Text className="text-white">
+            {currentStreak ? currentStreak : streak}
+          </Text>
         </View>
       </TouchableOpacity>
 

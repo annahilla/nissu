@@ -1,6 +1,6 @@
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import X from '@/assets/icons/X.svg';
-import { useHabits } from '@/context/HabitContext';
+import { useHabits } from '@/context/HabitsContext';
 
 const HabitInput = () => {
   const { newHabit, setNewHabit, addHabit, setIsAddingNewHabit } = useHabits();

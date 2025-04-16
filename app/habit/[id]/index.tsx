@@ -14,14 +14,25 @@ import { Habit } from '@/types/habits';
 import LoadingScreen from '@/components/ui/LoadingScreen';
 import HabitItem from '@/components/habits/HabitItem';
 import BackIcon from '@/assets/icons/back-icon.svg';
-import CloudsBackground from '@/components/ui/CloudsBackground';
+import CloudsBackground from '@/components/layout/CloudsBackground';
 import StackedHouse from '@/components/house/StackedHouse';
 import CatMessage from '@/components/house/CatMessage';
+import LosingStreakModal from '@/components/house/LosingStreakModal';
+import { useHabit } from '@/context/HabitContext';
+import { isStreakLost } from '@/utils/streaks';
 
 const HabitScreen = () => {
   const router = useRouter();
   const { id } = useLocalSearchParams();
-  const [habit, setHabit] = useState<Habit | null>(null);
+  const {
+    habit,
+    setHabit,
+    isLosingStreak,
+    setIsLosingStreak,
+    isLostStreak,
+    streak,
+    setIsLostStreak,
+  } = useHabit();
   const [isLoading, setIsLoading] = useState(true);
 
   useFocusEffect(
@@ -64,6 +75,10 @@ const HabitScreen = () => {
     fetchHabit();
   }, []);
 
+  useEffect(() => {
+    setIsLostStreak(false);
+  }, []);
+
   const fetchHabit = async () => {
     setIsLoading(true);
     const response = await habitsService.getHabit(id as string);
@@ -83,26 +98,35 @@ const HabitScreen = () => {
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    if (habit) {
+      const isCurrentStreakLost = isStreakLost(habit);
+      setIsLosingStreak(isCurrentStreakLost);
+    }
+  }, [habit]);
+
   if (isLoading || !habit) return <LoadingScreen />;
 
   return (
     <View className="relative flex-1" {...panResponder.panHandlers}>
       <CloudsBackground />
-
       <View className="absolute z-10 w-full">
         <View className="flex flex-row items-center justify-between gap-4 p-4">
           <TouchableOpacity onPress={() => router.replace('/')}>
             <BackIcon />
           </TouchableOpacity>
           <View className="flex-1">
-            <HabitItem habit={habit} />
+            <HabitItem habit={habit} currentStreak={streak} />
           </View>
         </View>
       </View>
-
-      <StackedHouse habit={habit} />
-
-      <CatMessage habit={habit} />
+      {isLosingStreak && (
+        <View className="absolute top-28 z-[100] w-full">
+          <LosingStreakModal />
+        </View>
+      )}
+      <StackedHouse />
+      {!isLosingStreak && !isLostStreak && <CatMessage />}
     </View>
   );
 };
