@@ -117,10 +117,15 @@ const HabitItem = ({
             <TouchableOpacity
               onPress={handleCheck}
               disabled={isLostStreak}
-              className="m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 border-green"></TouchableOpacity>
+              className={`m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 ${isLostStreak ? 'border-green/30' : 'border-green'}`}></TouchableOpacity>
           )}
 
-          <Text className="max-w-28 text-lg">{updatedHabit}</Text>
+          <View className="flex flex-row items-start gap-1">
+            <Text className="max-w-28 text-lg">{updatedHabit}</Text>
+            {isLostStreak && (
+              <View className="mt-2 h-2 w-2 rounded-full bg-red-500/60"></View>
+            )}
+          </View>
         </View>
         <View
           className={`${isChecked ? 'bg-orange' : 'bg-lightOrange'} flex h-14 w-14 items-center justify-center rounded-full`}>
