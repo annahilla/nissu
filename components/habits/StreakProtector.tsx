@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import Star from '@/assets/icons/star.svg';
+import Cookie from '@/assets/icons/cookie.svg';
 import { useAuth } from '@/context/AuthContext';
 import { useEffect } from 'react';
 import { useStreakProtector } from '@/context/StreakProtectorContext';
@@ -16,7 +16,7 @@ const StreakProtector = () => {
 
   return (
     <View className="flex flex-row items-center gap-2">
-      <Star width={24} height={24} />
+      <Cookie width={24} height={24} />
       <Text className="text-brown">{streakProtector.value}</Text>
     </View>
   );

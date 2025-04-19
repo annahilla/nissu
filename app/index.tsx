@@ -15,6 +15,7 @@ import { getRandomCat, getRandomPosition } from '@/consts/cats';
 import { useHabits } from '@/context/HabitsContext';
 import { useMessage } from '@/context/MessageContext';
 import { useTilt } from '@/hooks/useTilt';
+import Modal from '@/components/ui/Modal';
 
 const HomeScreen = () => {
   const router = useRouter();
@@ -27,8 +28,10 @@ const HomeScreen = () => {
     isAddingNewHabit,
     setIsAddingNewHabit,
     fetchHabits,
+    areSomeStreaksLost,
   } = useHabits();
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const randomPosition = useMemo(() => getRandomPosition(), []);
   const randomCat = useMemo(() => getRandomCat(), []);
 
@@ -58,6 +61,10 @@ const HomeScreen = () => {
     }
   }, [user, authLoading]);
 
+  useEffect(() => {
+    setModalVisible(areSomeStreaksLost);
+  }, [areSomeStreaksLost]);
+
   if (isLoading) return <LoadingScreen />;
 
   return (
@@ -72,7 +79,7 @@ const HomeScreen = () => {
             </View>
           )}
           <Container className={`${keyboardVisible ? 'h-auto' : 'h-[56%]'}`}>
-            <HabitsHeader />
+            <HabitsHeader isLosingStreak={areSomeStreaksLost} />
             <HabitList habits={habits} />
             {isAddingNewHabit ? (
               <HabitInput />
@@ -98,6 +105,12 @@ const HomeScreen = () => {
               </Animated.View>
             </Pressable>
           )}
+          <Modal visible={modalVisible} setVisible={setModalVisible}>
+            <Text className="mt-4 text-center text-lg">
+              You have lost some streaks, be sure to check them up today
+            </Text>
+            <Button onPress={() => setModalVisible(false)}>Ok</Button>
+          </Modal>
         </>
       ) : (
         <>

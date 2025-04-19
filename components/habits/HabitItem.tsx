@@ -34,6 +34,7 @@ const HabitItem = ({
   const [streak, setStreak] = useState(habit.streak);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updatedHabit, setUpdatedHabit] = useState(habit.name);
+  const isLostStreak = isStreakLost(habit);
 
   const handleCheck = async () => {
     let newStreak = streak;
@@ -84,8 +85,6 @@ const HabitItem = ({
   };
 
   const handleLooseStreak = () => {
-    const isLostStreak = isStreakLost(habit);
-
     if (isLostStreak) {
       //router.push(`/habit/${habit.$id}`);
     }
@@ -117,6 +116,7 @@ const HabitItem = ({
           ) : (
             <TouchableOpacity
               onPress={handleCheck}
+              disabled={isLostStreak}
               className="m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 border-green"></TouchableOpacity>
           )}
 

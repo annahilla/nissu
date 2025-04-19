@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container } from '../layout/Container';
 import HabitsHeader from '../layout/Header';
 import Button from '../ui/Button';
@@ -46,6 +46,10 @@ const LosingStreakModal = () => {
     setIsLosingStreak(false);
   };
 
+  useEffect(() => {
+    looseStreak();
+  }, []);
+
   if (!habit) return <Spinner />;
 
   return (
@@ -56,15 +60,15 @@ const LosingStreakModal = () => {
           Oh no! You lost your streak for {habit.name}!
         </Text>
         <Text className="text-center text-lg">
-          Nissu is protecting your house but if you don't fed him it will fall
-          apart
+          Nissu is protecting your house but if you don't give him a cookie it
+          will fall apart
         </Text>
       </View>
       <View className="flex flex-row gap-2">
         <Button variant="outline" onPress={looseStreak}>
-          Loose streak
+          Loose house
         </Button>
-        <Button onPress={spendStreakProtector}>Fed Nissu</Button>
+        <Button onPress={spendStreakProtector}>Give a cookie</Button>
       </View>
     </Container>
   );

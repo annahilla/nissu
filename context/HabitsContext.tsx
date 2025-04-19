@@ -1,8 +1,15 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from 'react';
 import { Habit } from '@/types/habits';
 import { useAuth } from './AuthContext';
 import { Alert } from 'react-native';
 import habitsService from '@/services/habitService';
+import { isStreakLost } from '@/utils/streaks';
 
 interface HabitsContextInterface {
   habits: Habit[];
@@ -17,6 +24,7 @@ interface HabitsContextInterface {
   isLoading: boolean;
   isAddingNewHabit: boolean;
   setIsAddingNewHabit: (value: boolean) => void;
+  areSomeStreaksLost: boolean;
 }
 
 interface HabitsProviderInterface {
@@ -36,6 +44,7 @@ const HabitsContext = createContext<HabitsContextInterface>({
   isLoading: false,
   isAddingNewHabit: false,
   setIsAddingNewHabit: () => {},
+  areSomeStreaksLost: true,
 });
 
 export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
@@ -45,6 +54,7 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
   const [newHabit, setNewHabit] = useState('');
   const [updatedHabit, setUpdatedHabit] = useState('');
   const [isAddingNewHabit, setIsAddingNewHabit] = useState(false);
+  const [areSomeStreaksLost, setAreSomeStreaksLost] = useState(false);
 
   const fetchHabits = async () => {
     if (user) {
@@ -110,6 +120,14 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
     }
   };
 
+  const lostStreakHabits = habits.some((habit) => isStreakLost(habit));
+
+  useEffect(() => {
+    if (habits) {
+      setAreSomeStreaksLost(lostStreakHabits);
+    }
+  }, [lostStreakHabits]);
+
   return (
     <HabitsContext.Provider
       value={{
@@ -125,6 +143,7 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
         isLoading,
         isAddingNewHabit,
         setIsAddingNewHabit,
+        areSomeStreaksLost,
       }}>
       {children}
     </HabitsContext.Provider>
