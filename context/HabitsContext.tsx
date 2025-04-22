@@ -13,12 +13,10 @@ import { isStreakLost } from '@/utils/streaks';
 
 interface HabitsContextInterface {
   habits: Habit[];
-  newHabit: string;
-  setNewHabit: (value: string) => void;
   updatedHabit: string;
   setUpdatedHabit: (value: string) => void;
   fetchHabits: () => void;
-  addHabit: () => void;
+  addHabit: (habit: string) => void;
   updateHabit: (id: string, updatedHabit: Habit) => Promise<void>;
   deleteHabit: (id: string) => Promise<void>;
   isLoading: boolean;
@@ -33,8 +31,6 @@ interface HabitsProviderInterface {
 
 const HabitsContext = createContext<HabitsContextInterface>({
   habits: [],
-  newHabit: '',
-  setNewHabit: () => {},
   updatedHabit: '',
   setUpdatedHabit: () => {},
   fetchHabits: async () => ({}),
@@ -51,7 +47,6 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
   const { user } = useAuth();
   const [habits, setHabits] = useState<Habit[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [newHabit, setNewHabit] = useState('');
   const [updatedHabit, setUpdatedHabit] = useState('');
   const [isAddingNewHabit, setIsAddingNewHabit] = useState(false);
   const [areSomeStreaksLost, setAreSomeStreaksLost] = useState(false);
@@ -71,7 +66,7 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
     }
   };
 
-  const addHabit = async () => {
+  const addHabit = async (newHabit: string) => {
     if (newHabit.trim() === '') return;
 
     if (user) {
@@ -83,7 +78,6 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
           setHabits([...habits, response.data as unknown as Habit]);
         }
       }
-      setNewHabit('');
       setIsAddingNewHabit(false);
     }
   };
@@ -132,8 +126,6 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
     <HabitsContext.Provider
       value={{
         habits,
-        newHabit,
-        setNewHabit,
         updatedHabit,
         setUpdatedHabit,
         fetchHabits,

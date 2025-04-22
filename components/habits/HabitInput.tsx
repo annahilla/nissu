@@ -1,28 +1,42 @@
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 import X from '@/assets/icons/X.svg';
 import { useHabits } from '@/context/HabitsContext';
+import { memo, useState } from 'react';
 
 const HabitInput = () => {
-  const { newHabit, setNewHabit, addHabit, setIsAddingNewHabit } = useHabits();
+  const { addHabit, setIsAddingNewHabit } = useHabits();
+  const [inputValue, setInputValue] = useState('');
 
   const onCancel = () => {
+    setInputValue('');
     setIsAddingNewHabit(false);
+  };
+
+  const handleAdd = () => {
+    if (inputValue.trim() !== '') {
+      addHabit(inputValue);
+      setInputValue('');
+      setIsAddingNewHabit(false);
+    }
   };
 
   return (
     <View className="flex h-[3.8rem] w-full flex-row items-center justify-between rounded-full border border-2 border-green">
-      <View className="flex flex-row items-center gap-2">
+      <View className="flex-1 flex-row items-center gap-2">
         <TouchableOpacity
-          onPress={addHabit}
+          onPress={handleAdd}
           className="m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 border-green text-white">
           <Text className="text-xl text-green">+</Text>
         </TouchableOpacity>
         <TextInput
-          className="flex max-w-28 flex-wrap text-lg placeholder:opacity-60"
+          className="w-44 text-lg placeholder:opacity-60"
           placeholder="Enter habit"
-          value={newHabit}
-          onChangeText={setNewHabit}
-          onSubmitEditing={addHabit}
+          value={inputValue}
+          onChangeText={setInputValue}
+          onSubmitEditing={handleAdd}
+          scrollEnabled={false}
+          numberOfLines={1}
+          multiline={false}
         />
       </View>
       <TouchableOpacity
@@ -34,4 +48,4 @@ const HabitInput = () => {
   );
 };
 
-export default HabitInput;
+export default memo(HabitInput);

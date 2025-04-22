@@ -79,17 +79,20 @@ const HomeScreen = () => {
           <Container className={`${keyboardVisible ? 'h-auto' : 'h-[56%]'}`}>
             <HabitsHeader isLosingStreak={areSomeStreaksLost} />
             <HabitList habits={habits} />
-            {isAddingNewHabit ? (
-              <HabitInput />
-            ) : (
-              <Button
-                onPress={() => setIsAddingNewHabit(true)}
-                variant="outline"
-                color="green"
-                round>
-                +
-              </Button>
-            )}
+            <View className="w-full">
+              <View className={isAddingNewHabit ? 'block' : 'hidden'}>
+                <HabitInput />
+              </View>
+              {!isAddingNewHabit && (
+                <Button
+                  onPress={() => setIsAddingNewHabit(true)}
+                  variant="outline"
+                  color="green"
+                  round>
+                  +
+                </Button>
+              )}
+            </View>
           </Container>
           {!keyboardVisible && (
             <Pressable
