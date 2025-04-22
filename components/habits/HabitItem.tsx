@@ -34,7 +34,7 @@ const HabitItem = ({
   const [streak, setStreak] = useState(habit.streak);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updatedHabit, setUpdatedHabit] = useState(habit.name);
-  const isLostStreak = isStreakLost(habit);
+  const isAlert = isStreakLost(habit);
 
   const handleCheck = async () => {
     let newStreak = streak;
@@ -84,21 +84,13 @@ const HabitItem = ({
     }
   };
 
-  const handleLooseStreak = () => {
-    if (isLostStreak) {
-      //router.push(`/habit/${habit.$id}`);
-    }
-  };
-
-  useEffect(() => {
-    handleLooseStreak();
-  }, []);
-
   const handleNavigation = () => {
     if (currentId !== habit.$id) {
       router.replace(`/habit/${habit.$id}`);
     }
   };
+
+  console.log(currentStreak);
 
   return (
     <>
@@ -116,13 +108,13 @@ const HabitItem = ({
           ) : (
             <TouchableOpacity
               onPress={handleCheck}
-              disabled={isLostStreak}
-              className={`m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 ${isLostStreak ? 'border-green/30' : 'border-green'}`}></TouchableOpacity>
+              disabled={isAlert}
+              className={`m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 ${isAlert ? 'border-green/30' : 'border-green'}`}></TouchableOpacity>
           )}
 
           <View className="flex flex-row items-start gap-1">
             <Text className="max-w-28 text-lg">{updatedHabit}</Text>
-            {isLostStreak && (
+            {isAlert && (
               <View className="mt-2 h-2 w-2 rounded-full bg-red-500/60"></View>
             )}
           </View>
@@ -130,7 +122,9 @@ const HabitItem = ({
         <View
           className={`${isChecked ? 'bg-orange' : 'bg-lightOrange'} flex h-14 w-14 items-center justify-center rounded-full`}>
           <Text className="text-white">
-            {currentStreak ? currentStreak : streak}
+            {currentStreak !== undefined && currentStreak !== null
+              ? currentStreak
+              : streak}
           </Text>
         </View>
       </TouchableOpacity>

@@ -12,7 +12,8 @@ import { yesterday } from '@/consts/dates';
 
 const LosingStreakModal = () => {
   const { user } = useAuth();
-  const { habit, setIsLosingStreak, setIsLostStreak, setStreak } = useHabit();
+  const { habit, setHabit, setIsLosingStreak, setIsLostStreak, setStreak } =
+    useHabit();
   const { updateHabit } = useHabits();
   const { streakProtector, updateStreakProtector } = useStreakProtector();
 
@@ -23,6 +24,7 @@ const LosingStreakModal = () => {
         streak: 0,
       };
       updateHabit(habit.$id, updatedHabit);
+      setHabit(updatedHabit);
       setStreak(0);
       setIsLosingStreak(false);
       setIsLostStreak(true);
@@ -42,12 +44,15 @@ const LosingStreakModal = () => {
         lastCompleted: yesterday,
       };
       updateHabit(habit.$id, updatedHabit);
+      setHabit(updatedHabit);
     }
     setIsLosingStreak(false);
   };
 
   useEffect(() => {
-    looseStreak();
+    if (streakProtector.value === 0) {
+      looseStreak();
+    }
   }, []);
 
   if (!habit) return <Spinner />;

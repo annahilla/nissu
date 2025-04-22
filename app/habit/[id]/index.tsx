@@ -73,9 +73,6 @@ const HabitScreen = () => {
 
   useEffect(() => {
     fetchHabit();
-  }, []);
-
-  useEffect(() => {
     setIsLostStreak(false);
   }, []);
 

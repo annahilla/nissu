@@ -1,5 +1,11 @@
 import { Habit } from '@/types/habits';
-import { createContext, useContext, useState, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from 'react';
 
 interface HabitContextInterface {
   habit: Habit | null;
@@ -31,7 +37,13 @@ export const HabitProvider = ({ children }: HabitProviderInterface) => {
   const [habit, setHabit] = useState<Habit | null>(null);
   const [isLosingStreak, setIsLosingStreak] = useState(false);
   const [isLostStreak, setIsLostStreak] = useState(false);
-  const [streak, setStreak] = useState(habit?.streak || 0);
+  const [streak, setStreak] = useState(0);
+
+  useEffect(() => {
+    if (habit) {
+      setStreak(habit.streak);
+    }
+  }, [habit]);
 
   return (
     <HabitContext.Provider
