@@ -9,7 +9,8 @@ import { Habit } from '@/types/habits';
 import { useAuth } from './AuthContext';
 import { Alert } from 'react-native';
 import habitsService from '@/services/habitService';
-import { isStreakLost } from '@/utils/streaks';
+import { isStreakLost, streakHasToBeReseted } from '@/utils/streaks';
+import { useMessage } from './MessageContext';
 
 interface HabitsContextInterface {
   habits: Habit[];
@@ -45,6 +46,7 @@ const HabitsContext = createContext<HabitsContextInterface>({
 
 export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
   const { user } = useAuth();
+  const { setMessage } = useMessage();
   const [habits, setHabits] = useState<Habit[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [updatedHabit, setUpdatedHabit] = useState('');
@@ -114,6 +116,33 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
     }
   };
 
+  const habitsToReset = habits.filter((habit) => streakHasToBeReseted(habit));
+
+  const resetAllHabits = async () => {
+    const updatedHabits = await Promise.all(
+      habitsToReset.map(async (habit) => {
+        const updatedHabit = { ...habit, streak: 0 };
+        await updateHabit(habit.$id, updatedHabit);
+        return updatedHabit;
+      })
+    );
+
+    setHabits((prev) =>
+      prev.map((habit) => {
+        const updated = updatedHabits.find((h) => h.$id === habit.$id);
+        return updated ? updated : habit;
+      })
+    );
+
+    setMessage('Today is a sad day, you completely lost a streak and a house');
+  };
+
+  useEffect(() => {
+    if (habits && habitsToReset.length > 0) {
+      resetAllHabits();
+    }
+  }, [habitsToReset]);
+
   const lostStreakHabits = habits.some((habit) => isStreakLost(habit));
 
   useEffect(() => {
@@ -121,6 +150,12 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
       setAreSomeStreaksLost(lostStreakHabits);
     }
   }, [lostStreakHabits]);
+
+  useEffect(() => {
+    if (areSomeStreaksLost && habitsToReset.length === 0) {
+      setMessage('You have lost some streaks, be sure to check them up today');
+    }
+  }, [areSomeStreaksLost]);
 
   return (
     <HabitsContext.Provider

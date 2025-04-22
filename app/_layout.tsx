@@ -11,9 +11,9 @@ colorScheme.set('light');
 const RootLayout = () => {
   return (
     <AuthProvider>
-      <HabitsProvider>
-        <StreakProtectorProvider>
-          <MessageProvider>
+      <MessageProvider>
+        <HabitsProvider>
+          <StreakProtectorProvider>
             <Stack
               screenOptions={{
                 headerShown: false,
@@ -22,9 +22,9 @@ const RootLayout = () => {
               <Stack.Screen name="login" />
               <Stack.Screen name="habit/[id]" />
             </Stack>
-          </MessageProvider>
-        </StreakProtectorProvider>
-      </HabitsProvider>
+          </StreakProtectorProvider>
+        </HabitsProvider>
+      </MessageProvider>
     </AuthProvider>
   );
 };

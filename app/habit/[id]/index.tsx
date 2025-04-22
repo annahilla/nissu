@@ -31,7 +31,6 @@ const HabitScreen = () => {
     setIsLosingStreak,
     isLostStreak,
     streak,
-    setIsLostStreak,
   } = useHabit();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -73,7 +72,6 @@ const HabitScreen = () => {
 
   useEffect(() => {
     fetchHabit();
-    setIsLostStreak(false);
   }, []);
 
   const fetchHabit = async () => {

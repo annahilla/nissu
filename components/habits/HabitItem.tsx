@@ -36,6 +36,10 @@ const HabitItem = ({
   const [updatedHabit, setUpdatedHabit] = useState(habit.name);
   const isAlert = isStreakLost(habit);
 
+  useEffect(() => {
+    setStreak(habit.streak);
+  }, [habit.streak]);
+
   const handleCheck = async () => {
     let newStreak = streak;
     let newLastCompleted = habit.lastCompleted;

@@ -19,7 +19,7 @@ import { useTilt } from '@/hooks/useTilt';
 const HomeScreen = () => {
   const router = useRouter();
   const { user, isLoading: authLoading } = useAuth();
-  const { message, generateNewMessage, setMessage } = useMessage();
+  const { message, generateNewMessage } = useMessage();
   const { tilt, wiggle } = useTilt();
   const {
     habits,
@@ -58,10 +58,6 @@ const HomeScreen = () => {
       router.replace('/login');
     }
   }, [user, authLoading]);
-
-  useEffect(() => {
-    setMessage('You have lost some streaks, be sure to check them up today');
-  }, [areSomeStreaksLost]);
 
   if (isLoading) return <LoadingScreen />;
 
