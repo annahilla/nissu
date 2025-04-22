@@ -77,7 +77,7 @@ const HomeScreen = () => {
             </View>
           )}
           <Container className={`${keyboardVisible ? 'h-auto' : 'h-[56%]'}`}>
-            <HabitsHeader isLosingStreak={areSomeStreaksLost} />
+            <HabitsHeader isLosingStreak={areSomeStreaksLost} showModal />
             <HabitList habits={habits} />
             <View className="w-full">
               <View className={isAddingNewHabit ? 'block' : 'hidden'}>

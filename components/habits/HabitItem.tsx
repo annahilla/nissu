@@ -90,8 +90,6 @@ const HabitItem = ({
     }
   };
 
-  console.log(currentStreak);
-
   return (
     <>
       <TouchableOpacity

@@ -7,13 +7,15 @@ import StreakProtector from '../habits/StreakProtector';
 const HabitsHeader = ({
   isLosingStreak,
   isStreakLost,
+  showModal = false,
 }: {
   isLosingStreak?: boolean;
   isStreakLost?: boolean;
+  showModal?: boolean;
 }) => {
   return (
     <View className="flex flex-row items-center justify-between">
-      <StreakProtector />
+      <StreakProtector showModal={showModal} />
       {isStreakLost ? (
         <CryingCat width={24} height={24} />
       ) : isLosingStreak ? (
