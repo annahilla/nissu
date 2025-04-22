@@ -9,6 +9,7 @@ import { useStreakProtector } from '@/context/StreakProtectorContext';
 import { useHabit } from '@/context/HabitContext';
 import Spinner from '../ui/Spinner';
 import { yesterday } from '@/consts/dates';
+import Cookie from '@/assets/icons/cookie.svg';
 
 const LosingStreakModal = () => {
   const { user } = useAuth();
@@ -17,7 +18,7 @@ const LosingStreakModal = () => {
   const { updateHabit } = useHabits();
   const { streakProtector, updateStreakProtector } = useStreakProtector();
 
-  const looseStreak = () => {
+  const loseStreak = () => {
     if (habit) {
       const updatedHabit = {
         ...habit,
@@ -51,7 +52,7 @@ const LosingStreakModal = () => {
 
   useEffect(() => {
     if (streakProtector.value === 0) {
-      looseStreak();
+      loseStreak();
     }
   }, []);
 
@@ -61,19 +62,24 @@ const LosingStreakModal = () => {
     <Container className=" mx-auto">
       <HabitsHeader isStreakLost />
       <View className="flex gap-4">
-        <Text className="text-center text-lg">
-          Oh no! You lost your streak for {habit.name}!
+        <Text className="text-center text-lg font-bold">
+          Oh no! You forgot to complete your habit: {habit.name}
         </Text>
         <Text className="text-center text-lg">
-          Nissu is protecting your house but if you don't give him a cookie it
-          will fall apart
+          Nissu is doing his best to save your house... but he needs a cookie to
+          keep it standing!
         </Text>
       </View>
       <View className="flex flex-row gap-2">
-        <Button variant="outline" onPress={looseStreak}>
-          Loose house
+        <Button variant="outline" onPress={loseStreak}>
+          Let it fall
         </Button>
-        <Button onPress={spendStreakProtector}>Give a cookie</Button>
+        <Button onPress={spendStreakProtector}>
+          <View className="flex flex-row items-center justify-center gap-2">
+            <Cookie width={22} height={22} />
+            <Text className="font-bold text-beige">Give cookie</Text>
+          </View>
+        </Button>
       </View>
     </Container>
   );
