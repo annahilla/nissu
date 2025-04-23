@@ -54,10 +54,6 @@ export const MessageProvider = ({ children }: MessageProviderInterface) => {
     setMessage(newMessage);
   };
 
-  useEffect(() => {
-    setMessage(generateDailyMessage());
-  }, []);
-
   return (
     <MessageContext.Provider
       value={{ message, setMessage, generateNewMessage }}>

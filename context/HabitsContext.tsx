@@ -46,7 +46,7 @@ const HabitsContext = createContext<HabitsContextInterface>({
 
 export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
   const { user } = useAuth();
-  const { setMessage } = useMessage();
+  const { setMessage, generateNewMessage } = useMessage();
   const [habits, setHabits] = useState<Habit[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [updatedHabit, setUpdatedHabit] = useState('');
@@ -116,6 +116,12 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
       setHabits(habits.filter((habit) => habit.$id !== id));
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      fetchHabits();
+    }
+  }, [user]);
 
   const habitsToReset = habits.filter((habit) => streakHasToBeReseted(habit));
 
