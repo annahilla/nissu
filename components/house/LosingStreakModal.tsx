@@ -10,9 +10,11 @@ import { useHabit } from '@/context/HabitContext';
 import Spinner from '../ui/Spinner';
 import { yesterday } from '@/consts/dates';
 import Cookie from '@/assets/icons/cookie.svg';
+import { useMessage } from '@/context/MessageContext';
 
 const LosingStreakModal = () => {
   const { user } = useAuth();
+  const { setMessage } = useMessage();
   const { habit, setHabit, setIsLosingStreak, setIsLostStreak, setStreak } =
     useHabit();
   const { updateHabit } = useHabits();
@@ -29,6 +31,7 @@ const LosingStreakModal = () => {
       setStreak(0);
       setIsLosingStreak(false);
       setIsLostStreak(true);
+      setMessage(`You lost the streak for ${habit.name}`);
     }
   };
 
@@ -46,6 +49,7 @@ const LosingStreakModal = () => {
       };
       updateHabit(habit.$id, updatedHabit);
       setHabit(updatedHabit);
+      setMessage(`Yay! You saved the streak for ${habit.name}`);
     }
     setIsLosingStreak(false);
   };

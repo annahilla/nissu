@@ -52,6 +52,7 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
   const [updatedHabit, setUpdatedHabit] = useState('');
   const [isAddingNewHabit, setIsAddingNewHabit] = useState(false);
   const [areSomeStreaksLost, setAreSomeStreaksLost] = useState(false);
+  const [lostStreakHabits, setLostStreakHabits] = useState(false);
 
   const fetchHabits = async () => {
     if (user) {
@@ -143,7 +144,10 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
     }
   }, [habitsToReset]);
 
-  const lostStreakHabits = habits.some((habit) => isStreakLost(habit));
+  useEffect(() => {
+    const areHabitsLost = habits.some((habit) => isStreakLost(habit));
+    setLostStreakHabits(areHabitsLost);
+  }, [habits]);
 
   useEffect(() => {
     if (habits) {
