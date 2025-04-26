@@ -1,4 +1,10 @@
-import { ImageBackground, StyleSheet, Animated, Easing } from 'react-native';
+import {
+  ImageBackground,
+  StyleSheet,
+  Animated,
+  Easing,
+  Dimensions,
+} from 'react-native';
 import { useEffect, useRef } from 'react';
 import clouds from '@/assets/background/clouds.png';
 import {
@@ -10,6 +16,8 @@ import {
   OUTPUT_RANGE_START,
 } from '@/consts/animatedBackground';
 import React from 'react';
+
+const { width, height } = Dimensions.get('window');
 
 const CloudsBackground = () => {
   const initialValue = 0;
@@ -56,8 +64,8 @@ const CloudsBackground = () => {
 const styles = StyleSheet.create({
   background: {
     position: 'absolute',
-    width: 1200,
-    height: 1200,
+    width: width * 2.5,
+    height: height * 2.5,
     top: 0,
     transform: [{ translateX: 0 }, { translateY: 0 }],
   },

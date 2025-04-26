@@ -15,11 +15,11 @@ import LoadingScreen from '@/components/ui/LoadingScreen';
 import HabitItem from '@/components/habits/HabitItem';
 import BackIcon from '@/assets/icons/back-icon.svg';
 import CloudsBackground from '@/components/layout/CloudsBackground';
-import StackedHouse from '@/components/house/StackedHouse';
 import CatMessage from '@/components/house/CatMessage';
 import LosingStreakModal from '@/components/house/LosingStreakModal';
 import { useHabit } from '@/context/HabitContext';
 import { isStreakLost } from '@/utils/streaks';
+import House from '@/components/house/House';
 
 const HabitScreen = () => {
   const router = useRouter();
@@ -120,8 +120,13 @@ const HabitScreen = () => {
           <LosingStreakModal />
         </View>
       )}
-      <StackedHouse />
-      {!isLosingStreak && !isLostStreak && <CatMessage />}
+
+      <View className="relative flex-1">
+        <House />
+        <View className="absolute bottom-1 right-2">
+          {!isLosingStreak && !isLostStreak && <CatMessage />}
+        </View>
+      </View>
     </View>
   );
 };

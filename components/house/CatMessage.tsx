@@ -65,9 +65,7 @@ const CatMessage = () => {
 
   return (
     <Pressable onPress={toggleBubble}>
-      <Animated.View
-        className="absolute bottom-1 right-2"
-        style={{ transform: [{ rotate: tilt }, { scaleX: -1 }] }}>
+      <Animated.View style={{ transform: [{ rotate: tilt }, { scaleX: -1 }] }}>
         <Cat width={80} height={80} />
       </Animated.View>
 

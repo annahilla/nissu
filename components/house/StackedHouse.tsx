@@ -1,29 +1,15 @@
-import { ScrollView, Image, View } from 'react-native';
+import { ScrollView, Image, Dimensions } from 'react-native';
 import { useEffect, useRef } from 'react';
 import BottomHouse from '@/assets/house/bottom-house.png';
 import TopHouse from '@/assets/house/top-house.png';
 import CenterFloor from '@/assets/house/center-floor.png';
-import OneFloorHouse from '@/assets/house/one-floor.png';
-import TwoFloorHouse from '@/assets/house/two-floors.png';
-import NoHouse from '@/assets/house/no-house.png';
-import { Habit } from '@/types/habits';
 import { useHabit } from '@/context/HabitContext';
 import LoadingScreen from '../ui/LoadingScreen';
-import StreakLostHouse from './StreakLostHouse';
 
 const StackedHouse = () => {
-  const { habit, isLostStreak } = useHabit();
+  const { habit } = useHabit();
   const scrollViewRef = useRef<ScrollView>(null);
-
-  const getHouseImage = (habit: Habit) => {
-    if (habit.streak === 0) {
-      return NoHouse;
-    } else if (habit.streak === 1) {
-      return OneFloorHouse;
-    } else if (habit.streak === 2) {
-      return TwoFloorHouse;
-    }
-  };
+  const { width } = Dimensions.get('window');
 
   useEffect(() => {
     if (scrollViewRef.current) {
@@ -53,23 +39,35 @@ const StackedHouse = () => {
       contentInsetAdjustmentBehavior="always"
       showsVerticalScrollIndicator={false}
       onContentSizeChange={onContentSizeChange}>
-      {isLostStreak ? (
-        <StreakLostHouse />
-      ) : habit.streak < 3 ? (
-        <View className="relative h-full w-full flex-1">
-          <View className="absolute bottom-0 left-1/2 -translate-x-1/2 transform">
-            <Image source={getHouseImage(habit)} />
-          </View>
-        </View>
-      ) : (
-        <>
-          <Image source={TopHouse} />
-          {Array.from({ length: habit.streak - 3 }).map((_, index) => (
-            <Image key={index} source={CenterFloor} />
-          ))}
-          <Image className="-mt-1" source={BottomHouse} />
-        </>
-      )}
+      <Image
+        source={TopHouse}
+        resizeMode="cover"
+        style={{
+          width: '100%',
+          height: width / 2.45,
+        }}
+      />
+
+      {Array.from({ length: habit.streak - 3 }).map((_, index) => (
+        <Image
+          className="-mt-1"
+          key={index}
+          source={CenterFloor}
+          resizeMode="cover"
+          style={{
+            width: '100%',
+            height: width / 3.6,
+          }}
+        />
+      ))}
+      <Image
+        source={BottomHouse}
+        resizeMode="cover"
+        style={{
+          width: '100%',
+          height: width / 1.1,
+        }}
+      />
     </ScrollView>
   );
 };
