@@ -117,12 +117,6 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
     }
   };
 
-  useEffect(() => {
-    if (user) {
-      fetchHabits();
-    }
-  }, [user]);
-
   const habitsToReset = habits.filter((habit) => streakHasToBeReseted(habit));
 
   const resetAllHabits = async () => {

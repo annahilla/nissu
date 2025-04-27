@@ -81,7 +81,9 @@ const LosingStreakModal = () => {
         <Button onPress={spendStreakProtector}>
           <View className="flex flex-row items-center justify-center gap-2">
             <Cookie width={22} height={22} />
-            <Text className="font-bold text-beige">Give cookie</Text>
+            <Text className="max-w-full flex-shrink font-bold text-beige">
+              Give cookie
+            </Text>
           </View>
         </Button>
       </View>
