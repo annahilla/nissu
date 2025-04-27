@@ -1,5 +1,6 @@
 import { TouchableOpacity, Text } from 'react-native';
 import { ReactNode } from 'react';
+import { buttonSize } from '@/consts/sizes';
 
 interface ButtonProps {
   children: ReactNode;
@@ -33,13 +34,18 @@ const Button = ({
     brown: 'text-brown',
   };
 
-  const padding = round ? 'h-[3.8rem] w-[3.8rem]' : 'px-6 py-3';
+  const padding = round ? '' : 'px-6 py-3';
 
   if (variant === 'outline') {
     return (
       <TouchableOpacity
         onPress={onPress}
-        className={`${className} m-auto flex items-center justify-center rounded-full border border-2 ${borderColors[color]} ${padding}`}>
+        className={`${className} m-auto flex items-center justify-center rounded-full border border-2 ${borderColors[color]} ${padding}`}
+        style={
+          round
+            ? { height: buttonSize, width: buttonSize }
+            : { paddingHorizontal: 24, paddingVertical: 12 }
+        }>
         <Text
           className={`${round ? 'text-2xl' : 'text-lg'} ${textColors[color]}`}>
           {children}
