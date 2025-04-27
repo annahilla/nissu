@@ -13,9 +13,11 @@ import { useMessage } from '@/context/MessageContext';
 const HabitItem = ({
   habit,
   currentStreak,
+  disabled = false,
 }: {
   habit: Habit;
   currentStreak?: number;
+  disabled?: boolean;
 }) => {
   const { user } = useAuth();
   const { updateHabit } = useHabits();
@@ -104,13 +106,14 @@ const HabitItem = ({
           {isChecked ? (
             <TouchableOpacity
               onPress={handleCheck}
+              disabled={disabled}
               className="m-1 flex h-12 w-12 items-center justify-center rounded-full">
               <Check />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               onPress={handleCheck}
-              disabled={isAlert}
+              disabled={isAlert || disabled}
               className={`m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 ${isAlert ? 'border-green/30' : 'border-green'}`}></TouchableOpacity>
           )}
 

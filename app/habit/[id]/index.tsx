@@ -111,7 +111,7 @@ const HabitScreen = () => {
             <BackIcon />
           </TouchableOpacity>
           <View className="flex-1">
-            <HabitItem habit={habit} currentStreak={streak} />
+            <HabitItem habit={habit} currentStreak={streak} disabled />
           </View>
         </View>
       </View>
