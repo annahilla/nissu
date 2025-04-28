@@ -9,6 +9,7 @@ import { useHabits } from '@/context/HabitsContext';
 import { useAuth } from '@/context/AuthContext';
 import { useStreakProtector } from '@/context/StreakProtectorContext';
 import { useMessage } from '@/context/MessageContext';
+import { buttonSize, checkSize, streakSize } from '@/consts/sizes';
 
 const HabitItem = ({
   habit,
@@ -101,20 +102,23 @@ const HabitItem = ({
       <TouchableOpacity
         onPress={handleNavigation}
         onLongPress={() => setIsModalOpen(true)}
-        className="my-2 flex h-[3.8rem] w-full flex-row items-center justify-between rounded-full border border-2 border-green bg-beige">
+        style={{ height: buttonSize }}
+        className="my-2 flex w-full flex-row items-center justify-between rounded-full border border-2 border-green bg-beige">
         <View className="flex flex-row items-center gap-2">
           {isChecked ? (
             <TouchableOpacity
               onPress={handleCheck}
               disabled={disabled}
-              className="m-1 flex h-12 w-12 items-center justify-center rounded-full">
+              style={{ height: checkSize, width: checkSize }}
+              className="m-1 flex items-center justify-center rounded-full">
               <Check />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               onPress={handleCheck}
               disabled={isAlert || disabled}
-              className={`m-1 flex h-12 w-12 items-center justify-center rounded-full border border-2 ${isAlert ? 'border-green/30' : 'border-green'}`}></TouchableOpacity>
+              style={{ height: checkSize, width: checkSize }}
+              className={`m-1 flex items-center justify-center rounded-full border border-2 ${isAlert ? 'border-green/30' : 'border-green'}`}></TouchableOpacity>
           )}
 
           <View className="flex flex-row items-start gap-1">
@@ -125,7 +129,8 @@ const HabitItem = ({
           </View>
         </View>
         <View
-          className={`${isChecked ? 'bg-orange' : 'bg-lightOrange'} flex h-14 w-14 items-center justify-center rounded-full`}>
+          style={{ height: streakSize, width: streakSize }}
+          className={`${isChecked ? 'bg-orange' : 'bg-lightOrange'} flex items-center justify-center rounded-full`}>
           <Text className="text-white">
             {currentStreak !== undefined && currentStreak !== null
               ? currentStreak
