@@ -28,7 +28,7 @@ const HabitsSection = () => {
   }, [habits.length]);
 
   return (
-    <Container style={{ height: keyboardVisible ? 'auto' : size }}>
+    <Container style={{ height: keyboardVisible ? '80%' : size }}>
       <HabitsHeader isLosingStreak={areSomeStreaksLost} showModal />
       <HabitList habits={habits} />
       <View className="w-full">
