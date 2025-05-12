@@ -42,9 +42,6 @@ const HabitScreen = () => {
       };
 
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
-      return () =>
-        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
     }, [router])
   );
 
@@ -106,7 +103,7 @@ const HabitScreen = () => {
     <View className="relative flex-1" {...panResponder.panHandlers}>
       <CloudsBackground />
       <View className="absolute z-10 w-full">
-        <View className="flex flex-row items-center justify-between gap-4 p-4">
+        <View className="mt-8 flex flex-row items-center justify-between gap-4 p-4">
           <TouchableOpacity onPress={() => router.replace('/')}>
             <BackIcon />
           </TouchableOpacity>
@@ -123,7 +120,7 @@ const HabitScreen = () => {
 
       <View className="relative flex-1">
         <House />
-        <View className="absolute bottom-1 right-2">
+        <View className="absolute bottom-12 right-2">
           {!isLosingStreak && !isLostStreak && <CatMessage />}
         </View>
       </View>

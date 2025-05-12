@@ -11,9 +11,9 @@ import Cat10 from '@/assets/cats/cat-10.svg';
 const catComponents = [Cat1, Cat2, Cat3, Cat4, Cat5, Cat7, Cat8, Cat9, Cat10];
 
 const positions = [
-  { bottom: 10, right: 20 },
-  { bottom: 10, left: 20 },
-  { bottom: 10 },
+  { bottom: 60, right: 0 },
+  { bottom: 60, left: 0 },
+  { bottom: 60 },
 ];
 
 export const getRandomCat = () => {
@@ -25,6 +25,7 @@ export const getRandomCat = () => {
   return (
     <RandomCat
       style={{
+        marginHorizontal: 20,
         transform: [{ scaleX: shouldFlip ? -1 : 1 }],
       }}
     />

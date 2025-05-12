@@ -11,7 +11,7 @@ const getHouseImageAndAspectRatio = (
   habit: Habit
 ): { image: ImageSourcePropType; aspectRatio: number } => {
   if (habit.streak === 0) {
-    return { image: NoHouse, aspectRatio: 2.58 };
+    return { image: NoHouse, aspectRatio: 1.5 };
   } else if (habit.streak === 1) {
     return { image: OneFloorHouse, aspectRatio: 1 };
   } else {

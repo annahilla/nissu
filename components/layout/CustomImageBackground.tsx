@@ -32,13 +32,13 @@ const CustomImageBackground = ({
           resizeMode="cover"
           style={{
             width: '100%',
-            height: width / 2.58,
+            height: width / 1.5,
           }}
         />
       </View>
 
       {user && (
-        <TouchableOpacity onPress={logout} className="absolute right-4 top-4">
+        <TouchableOpacity onPress={logout} className="absolute right-4 top-12">
           <Logout />
         </TouchableOpacity>
       )}
