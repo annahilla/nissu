@@ -44,7 +44,7 @@ const StackedHouse = () => {
         resizeMode="cover"
         style={{
           width: '100%',
-          height: width / 2.45,
+          height: width / 2.25,
         }}
       />
 
@@ -56,7 +56,7 @@ const StackedHouse = () => {
           resizeMode="cover"
           style={{
             width: '100%',
-            height: width / 3.6,
+            height: width / 3.35,
           }}
         />
       ))}
@@ -65,7 +65,7 @@ const StackedHouse = () => {
         resizeMode="cover"
         style={{
           width: '100%',
-          height: width / 1.1,
+          height: width / 1,
         }}
       />
     </ScrollView>

@@ -29,6 +29,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
+    },
+    "androidNavigationBar": {
+      "visible": "sticky-immersive"
     }
   }
 }

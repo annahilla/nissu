@@ -120,7 +120,7 @@ const HabitScreen = () => {
 
       <View className="relative flex-1">
         <House />
-        <View className="absolute bottom-12 right-2">
+        <View className="absolute bottom-2 right-4">
           {!isLosingStreak && !isLostStreak && <CatMessage />}
         </View>
       </View>
