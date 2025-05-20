@@ -28,12 +28,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.annahilla.nissu"
     },
     "androidNavigationBar": {
       "visible": "sticky-immersive"
     },
-    "deepLinking": true,
-    "deepLinks": ["verify-email"]
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d6d06ea2-b0ce-4f80-887c-1d7d2d5108ad"
+      }
+    }
   }
 }
