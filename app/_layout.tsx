@@ -21,6 +21,7 @@ const RootLayout = () => {
               <Stack.Screen name="index" />
               <Stack.Screen name="login" />
               <Stack.Screen name="habit/[id]" />
+              <Stack.Screen name="verify-email" />
             </Stack>
           </StreakProtectorProvider>
         </HabitsProvider>

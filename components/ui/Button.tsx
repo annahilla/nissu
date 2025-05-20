@@ -9,6 +9,7 @@ interface ButtonProps {
   round?: boolean;
   className?: string;
   onPress: () => void;
+  disabled?: boolean;
 }
 
 const Button = ({
@@ -18,6 +19,7 @@ const Button = ({
   round = false,
   className,
   onPress,
+  disabled = false,
 }: ButtonProps) => {
   const backgroundColors = {
     green: 'bg-green',
@@ -57,6 +59,7 @@ const Button = ({
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={disabled}
       className={`${className} m-auto flex items-center justify-center rounded-full ${padding} ${backgroundColors[color]}`}>
       <Text className="text-lg font-semibold text-beige">{children}</Text>
     </TouchableOpacity>

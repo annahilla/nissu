@@ -32,6 +32,8 @@
     },
     "androidNavigationBar": {
       "visible": "sticky-immersive"
-    }
+    },
+    "deepLinking": true,
+    "deepLinks": ["verify-email"]
   }
 }

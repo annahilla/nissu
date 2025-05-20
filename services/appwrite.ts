@@ -27,5 +27,6 @@ switch (Platform.OS) {
 }
 
 const account = new Account(client);
+const verificationUrl = process.env.EXPO_PUBLIC_VERIFICATION_URL || '';
 
-export { database, db, client, account };
+export { database, db, client, account, verificationUrl };

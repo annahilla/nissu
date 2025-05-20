@@ -8,6 +8,7 @@ export interface Habit {
 export interface User {
   $id: string;
   email: string;
+  emailVerification?: boolean;
 }
 
 export interface StreakProtector {
