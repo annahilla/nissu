@@ -5,7 +5,6 @@ const authService = {
   async register(email: string, password: string) {
     try {
       const response = await account.create(ID.unique(), email, password);
-      await account.createVerification(verificationUrl);
       return response;
     } catch (error) {
       return {

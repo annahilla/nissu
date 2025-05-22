@@ -1,8 +1,5 @@
 import { View, Text } from 'react-native';
-import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import Button from '../ui/Button';
-import { account, verificationUrl } from '@/services/appwrite';
 import BackgroundLayout from '../layout/BackgroundLayout';
 import Logo from '@/assets/logo.svg';
 import { useRouter } from 'expo-router';

@@ -1,44 +1,40 @@
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Logo from '@/assets/logo.svg';
 import BackgroundLayout from '@/components/layout/BackgroundLayout';
-import { account } from '@/services/appwrite';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Spinner from '@/components/ui/Spinner';
 import Button from '@/components/ui/Button';
 import ResendEmailButton from '@/components/login/ResendEmailButton';
+import { useAuth } from '@/context/AuthContext';
+import LoadingScreen from '@/components/ui/LoadingScreen';
 
 const VerifyEmailScreen = () => {
+  const { verifyEmail, isLoading } = useAuth();
   const { userId, secret } = useLocalSearchParams<{
     userId: string;
     secret: string;
   }>();
   const router = useRouter();
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>(
+  const [status, setStatus] = useState<'success' | 'error' | 'loading'>(
     'loading'
   );
 
   useEffect(() => {
-    const verify = async () => {
-      if (!secret) {
-        setStatus('error');
-        return;
-      }
-
-      try {
-        await account.updateVerification(userId, secret);
-        setStatus('success');
-        setTimeout(() => {
-          router.replace('/');
-        }, 2000);
-      } catch (err) {
-        console.error(err);
-        setStatus('error');
+    const runVerification = async () => {
+      const result = await verifyEmail(userId, secret);
+      setStatus(result);
+      if (result === 'success') {
+        router.replace('/');
       }
     };
 
-    verify();
+    runVerification();
   }, [secret]);
+
+  if (status === 'loading') {
+    return <LoadingScreen />;
+  }
 
   return (
     <BackgroundLayout className="px-10 py-12">
@@ -46,23 +42,6 @@ const VerifyEmailScreen = () => {
         <Logo width={95} />
       </View>
 
-      {status === 'loading' && (
-        <>
-          <Spinner />
-        </>
-      )}
-      {status === 'success' && (
-        <>
-          <Text className="text-center text-lg font-semibold">
-            Account verified!
-          </Text>
-          <Text className="text-md text-center">
-            Your Nissu account is now verified. You can now start counting
-            streaks.
-          </Text>
-          <Button onPress={() => router.replace('/')}>Start</Button>
-        </>
-      )}
       {status === 'error' && (
         <>
           <Text className="text-center text-lg font-semibold">

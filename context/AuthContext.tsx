@@ -7,6 +7,7 @@ import {
 } from 'react';
 import authService from '../services/authService';
 import { User } from '@/types/habits';
+import { account, verificationUrl } from '@/services/appwrite';
 
 interface AuthResponse {
   error?: string;
@@ -19,6 +20,10 @@ interface AuthContextInterface {
   register: (email: string, password: string) => Promise<AuthResponse>;
   logout: () => Promise<void>;
   isLoading: boolean;
+  verifyEmail: (
+    userId: string,
+    secret: string
+  ) => Promise<'success' | 'error' | 'loading'>;
 }
 
 interface AuthProviderInterface {
@@ -31,6 +36,7 @@ const AuthContext = createContext<AuthContextInterface>({
   register: async () => ({}),
   logout: async () => {},
   isLoading: false,
+  verifyEmail: async () => 'loading',
 });
 
 export const AuthProvider = ({ children }: AuthProviderInterface) => {
@@ -54,6 +60,14 @@ export const AuthProvider = ({ children }: AuthProviderInterface) => {
     setIsLoading(false);
   };
 
+  const sendVerificationEmail = async () => {
+    try {
+      await account.createVerification(verificationUrl);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const login = async (email: string, password: string) => {
     const response = await authService.login(email, password);
 
@@ -73,6 +87,7 @@ export const AuthProvider = ({ children }: AuthProviderInterface) => {
     }
 
     await login(email, password);
+    sendVerificationEmail();
 
     return { success: true };
   };
@@ -83,6 +98,25 @@ export const AuthProvider = ({ children }: AuthProviderInterface) => {
     await checkUser();
   };
 
+  const verifyEmail = async (
+    userId: string,
+    secret: string
+  ): Promise<'success' | 'error'> => {
+    if (!secret) return 'error';
+
+    setIsLoading(true);
+    try {
+      await account.updateVerification(userId, secret);
+      await checkUser();
+      return 'success';
+    } catch (err) {
+      console.error('Error verifying email:', err);
+      return 'error';
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -91,6 +125,7 @@ export const AuthProvider = ({ children }: AuthProviderInterface) => {
         register,
         logout,
         isLoading,
+        verifyEmail,
       }}>
       {children}
     </AuthContext.Provider>

@@ -3,8 +3,8 @@ import databaseService from './databaseService';
 import { ID, Query } from 'react-native-appwrite';
 import streakProtectorService from './streakProtectorService';
 
-const dbId = process.env.EXPO_PUBLIC_APPWRITE_DB as string;
-const colId = process.env.EXPO_PUBLIC_APPWRITE_COL_HABITS_ID as string;
+const dbId = process.env.APPWRITE_DB as string;
+const colId = process.env.APPWRITE_COL_HABITS_ID as string;
 
 const habitsService = {
   async getHabits(userId: string) {
