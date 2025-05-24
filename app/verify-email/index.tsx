@@ -37,24 +37,26 @@ const VerifyEmailScreen = () => {
   }
 
   return (
-    <BackgroundLayout className="px-10 py-12">
-      <View className="flex items-center">
-        <Logo width={95} />
-      </View>
-
+    <>
       {status === 'error' && (
-        <>
-          <Text className="text-center text-lg font-semibold">
-            Uh oh... Verification failed
-          </Text>
-          <Text className="text-md text-center">
-            Something went wrong verifying your account. Please try again or
-            request a new verification email from the app.
-          </Text>
-          <ResendEmailButton />
-        </>
+        <BackgroundLayout className="px-10 py-12">
+          <View className="flex items-center">
+            <Logo width={95} />
+          </View>
+
+          <>
+            <Text className="text-center text-lg font-semibold">
+              Uh oh... Verification failed
+            </Text>
+            <Text className="text-md text-center">
+              Something went wrong verifying your account. Please try again or
+              request a new verification email from the app.
+            </Text>
+            <ResendEmailButton />
+          </>
+        </BackgroundLayout>
       )}
-    </BackgroundLayout>
+    </>
   );
 };
 

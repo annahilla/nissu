@@ -1,6 +1,5 @@
 import { Client, Databases, Account } from 'react-native-appwrite';
 import { Platform } from 'react-native';
-
 const config = {
   endpoint: process.env.APPWRITE_ENDPOINT,
   projectId: process.env.APPWRITE_PROJECT_ID,

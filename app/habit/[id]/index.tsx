@@ -103,7 +103,7 @@ const HabitScreen = () => {
     <View className="relative flex-1" {...panResponder.panHandlers}>
       <CloudsBackground />
       <View className="absolute z-10 w-full">
-        <View className="mt-8 flex flex-row items-center justify-between gap-4 p-4">
+        <View className="mt-2 flex flex-row items-center justify-between gap-4 p-4">
           <TouchableOpacity onPress={() => router.replace('/')}>
             <BackIcon />
           </TouchableOpacity>

@@ -11,9 +11,9 @@ import Cat10 from '@/assets/cats/cat-10.svg';
 const catComponents = [Cat1, Cat2, Cat3, Cat4, Cat5, Cat7, Cat8, Cat9, Cat10];
 
 const positions = [
-  { bottom: 20, right: 10 },
-  { bottom: 20, left: 10 },
-  { bottom: 20 },
+  { bottom: 10, right: 10 },
+  { bottom: 10, left: 10 },
+  { bottom: 10 },
 ];
 
 export const getRandomCat = () => {

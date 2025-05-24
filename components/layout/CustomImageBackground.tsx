@@ -10,6 +10,7 @@ import { useAuth } from '@/context/AuthContext';
 import Logout from '@/assets/icons/logout.svg';
 import CloudsBackground from './CloudsBackground';
 import NoHouse from '@/assets/house/no-house.png';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const CustomImageBackground = ({
   children,
@@ -20,9 +21,15 @@ const CustomImageBackground = ({
 }) => {
   const { user, logout } = useAuth();
   const { width } = Dimensions.get('window');
+  const insets = useSafeAreaInsets();
 
   return (
-    <View className={`flex-1 items-center justify-center ${className}`}>
+    <View
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+      }}
+      className={`flex-1 items-center justify-center ${className}`}>
       <CloudsBackground />
 
       <View className="absolute bottom-0 w-full">
@@ -38,7 +45,7 @@ const CustomImageBackground = ({
       </View>
 
       {user && (
-        <TouchableOpacity onPress={logout} className="absolute right-4 top-12">
+        <TouchableOpacity onPress={logout} className="absolute right-4 top-4">
           <Logout />
         </TouchableOpacity>
       )}
