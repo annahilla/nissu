@@ -9,22 +9,25 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk"
-      }
+      },
+      "environment": "development",
+      "channel": "development"
     },
     "preview": {
       "distribution": "internal",
       "android": {
-        "buildType": "app-bundle"
-      }
+        "buildType": "apk"
+      },
+      "environment": "preview",
+      "channel": "preview"
     },
     "production": {
       "autoIncrement": true,
       "android": {
         "buildType": "app-bundle"
       },
-      "env": {
-        "ENV_FILE": ".env"
-      }
+      "environment": "production",
+      "channel": "production"
     }
   },
   "submit": {

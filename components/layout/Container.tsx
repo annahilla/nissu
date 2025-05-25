@@ -13,7 +13,7 @@ export const Container = ({
   return (
     <SafeAreaView
       style={style}
-      className={`flex w-[80%] flex-col rounded-xl border border-2 border-brown bg-beige p-5 text-center ${className} ${isSmallDevice ? 'gap-4' : 'gap-8'}`}>
+      className={`flex w-[80%] flex-col rounded-xl border-2 border-brown bg-beige p-5 text-center ${className} ${isSmallDevice ? 'gap-4' : 'gap-8'}`}>
       {children}
     </SafeAreaView>
   );

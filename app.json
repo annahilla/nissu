@@ -11,7 +11,10 @@
     },
     "scheme": "nissu",
     "newArchEnabled": true,
-    "plugins": ["expo-router", "expo-asset"],
+    "plugins": [
+      "expo-router",
+      "expo-asset"
+    ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,7 +23,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#E9E8DF"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -39,6 +44,12 @@
       "eas": {
         "projectId": "d6d06ea2-b0ce-4f80-887c-1d7d2d5108ad"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d6d06ea2-b0ce-4f80-887c-1d7d2d5108ad"
     }
   }
 }
