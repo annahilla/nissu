@@ -12,12 +12,17 @@ const HabitsScreen = () => {
       <View
         className="flex-1 items-center justify-center gap-4"
         style={{ marginBottom: keyboardVisible ? 0 : 50 }}>
-        {!keyboardVisible && <MessageCard />}
+        <View
+          className={keyboardVisible ? 'hidden' : 'block w-full items-center'}>
+          <MessageCard />
+        </View>
 
         <HabitsSection />
       </View>
 
-      {!keyboardVisible && <DynamicCat />}
+      <View className={keyboardVisible ? 'hidden' : 'block'}>
+        <DynamicCat />
+      </View>
     </View>
   );
 };

@@ -10,5 +10,5 @@ export const isSmallDevice = deviceHeight < 700;
 export const size = isSmallDevice ? '2.8rem' : '3.8rem';
 export const buttonSize = isSmallDevice ? 50 : 55;
 export const checkSize = buttonSize - 10;
-export const streakSize = buttonSize - 1;
+export const streakSize = buttonSize - 3;
 export const habitSectionSize = isSmallDevice ? 405 : isTablet ? 470 : 450;

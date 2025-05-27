@@ -14,7 +14,7 @@ const HabitsHeader = ({
   showModal?: boolean;
 }) => {
   return (
-    <View className="flex flex-row items-center justify-between">
+    <View className="flex w-full flex-row items-center justify-between">
       <StreakProtector showModal={showModal} />
       {isStreakLost ? (
         <CryingCat width={24} height={24} />

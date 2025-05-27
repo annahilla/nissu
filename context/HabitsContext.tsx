@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { Habit } from '@/types/habits';
 import { useAuth } from './AuthContext';
-import { Alert } from 'react-native';
+import { Alert, LayoutAnimation } from 'react-native';
 import habitsService from '@/services/habitService';
 import { isStreakLost, streakHasToBeReseted } from '@/utils/streaks';
 import { useMessage } from './MessageContext';
@@ -46,7 +46,7 @@ const HabitsContext = createContext<HabitsContextInterface>({
 
 export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
   const { user } = useAuth();
-  const { setMessage, generateNewMessage } = useMessage();
+  const { setMessage } = useMessage();
   const [habits, setHabits] = useState<Habit[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [updatedHabit, setUpdatedHabit] = useState('');
@@ -70,19 +70,34 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
   };
 
   const addHabit = async (newHabit: string) => {
-    if (newHabit.trim() === '') return;
+    if (newHabit.trim() === '' || !user) return;
 
-    if (user) {
-      const response = await habitsService.addHabit(user.$id, newHabit);
-      if (response.error) {
-        Alert.alert('Error: ', response.error);
-      } else {
-        if (response.data && !response.error) {
-          setHabits([...habits, response.data as unknown as Habit]);
-        }
-      }
-      setIsAddingNewHabit(false);
+    const provisionalHabit: Habit = {
+      $id: `${Date.now()}`,
+      name: newHabit,
+      streak: 0,
+    };
+
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setHabits((prev) => [...prev, provisionalHabit]);
+
+    const response = await habitsService.addHabit(user.$id, newHabit);
+    if (response.error) {
+      Alert.alert('Error', response.error);
+      setHabits((prev) =>
+        prev.filter((habit) => habit.$id !== provisionalHabit.$id)
+      );
+    } else {
+      setHabits((prev) =>
+        prev.map((habit) =>
+          habit.$id === provisionalHabit.$id
+            ? (response.data as unknown as Habit)
+            : habit
+        )
+      );
     }
+
+    setIsAddingNewHabit(false);
   };
 
   const updateHabit = async (id: string, updatedHabit: Habit) => {

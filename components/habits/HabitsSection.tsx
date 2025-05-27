@@ -5,14 +5,12 @@ import HabitList from './HabitList';
 import HabitInput from './HabitInput';
 import Button from '../ui/Button';
 import { useHabits } from '@/context/HabitsContext';
-import useKeyboardVisible from '@/hooks/useKeyboardVisible';
 import { habitSectionSize, isBigTablet, isTablet } from '@/consts/sizes';
 import { useEffect, useState } from 'react';
 
 const HabitsSection = () => {
   const { habits, isAddingNewHabit, setIsAddingNewHabit, areSomeStreaksLost } =
     useHabits();
-  const { keyboardVisible } = useKeyboardVisible();
   const [size, setSize] = useState(habitSectionSize);
 
   const extraHabits = habits.length - 4;
@@ -28,14 +26,14 @@ const HabitsSection = () => {
   }, [habits.length]);
 
   return (
-    <Container style={{ height: keyboardVisible ? '80%' : size }}>
+    <Container style={{ height: size }}>
       <HabitsHeader isLosingStreak={areSomeStreaksLost} showModal />
       <HabitList habits={habits} />
       <View className="w-full">
         <View className={isAddingNewHabit ? 'block' : 'hidden'}>
           <HabitInput />
         </View>
-        {!isAddingNewHabit && (
+        <View className={isAddingNewHabit ? 'hidden' : 'block'}>
           <Button
             onPress={() => setIsAddingNewHabit(true)}
             variant="outline"
@@ -43,7 +41,7 @@ const HabitsSection = () => {
             round>
             +
           </Button>
-        )}
+        </View>
       </View>
     </Container>
   );

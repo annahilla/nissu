@@ -103,7 +103,7 @@ const HabitItem = ({
         onPress={handleNavigation}
         onLongPress={() => setIsModalOpen(true)}
         style={{ height: buttonSize }}
-        className="my-2 flex w-full flex-row items-center justify-between rounded-full border border-2 border-green bg-beige">
+        className="my-2 flex w-full flex-row items-center justify-between rounded-full border-2 border-green bg-beige">
         <View className="flex flex-row items-center gap-2">
           {isChecked ? (
             <TouchableOpacity
@@ -118,7 +118,7 @@ const HabitItem = ({
               onPress={handleCheck}
               disabled={isAlert || disabled}
               style={{ height: checkSize, width: checkSize }}
-              className={`m-1 flex items-center justify-center rounded-full border border-2 ${isAlert ? 'border-green/30' : 'border-green'}`}></TouchableOpacity>
+              className={`m-1 flex items-center justify-center rounded-full border-2 ${isAlert ? 'border-green/30' : 'border-green'}`}></TouchableOpacity>
           )}
 
           <View className="flex flex-row items-start gap-1">

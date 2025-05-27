@@ -73,11 +73,11 @@ const CatMessage = () => {
         style={{
           position: 'absolute',
           bottom: 80,
-          right: isBubbleShowing ? 5 : 55,
+          right: isBubbleShowing ? 5 : 30,
           zIndex: 1,
         }}>
         <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-          <DialogBubble size="small" width={isBubbleShowing ? 170 : undefined}>
+          <DialogBubble size="small" width={isBubbleShowing ? 170 : 50}>
             <Text className="text-center text-black">
               {showMessage ? message() : '!'}
             </Text>

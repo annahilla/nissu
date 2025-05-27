@@ -16,10 +16,11 @@
     "preview": {
       "distribution": "internal",
       "android": {
-        "buildType": "apk"
+        "buildType": "app-bundle"
       },
       "environment": "preview",
-      "channel": "preview"
+      "channel": "preview",
+      "autoIncrement": true
     },
     "production": {
       "autoIncrement": true,
