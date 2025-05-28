@@ -63,7 +63,7 @@ const LosingStreakModal = () => {
   if (!habit) return <Spinner />;
 
   return (
-    <Container className=" mx-auto">
+    <Container className="mx-auto">
       <HabitsHeader isStreakLost />
       <View className="flex gap-4">
         <Text className="text-center text-lg font-bold">

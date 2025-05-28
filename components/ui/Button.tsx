@@ -42,7 +42,7 @@ const Button = ({
     return (
       <TouchableOpacity
         onPress={onPress}
-        className={`${className} m-auto flex items-center justify-center rounded-full border border-2 ${borderColors[color]} ${padding}`}
+        className={`${className} m-auto flex items-center justify-center rounded-full border-2 ${borderColors[color]} ${padding}`}
         style={
           round
             ? { height: buttonSize, width: buttonSize }

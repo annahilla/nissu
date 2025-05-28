@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Container } from '../layout/Container';
 import HabitsHeader from '../layout/Header';
@@ -8,8 +8,12 @@ import { useHabit } from '@/context/HabitContext';
 import Spinner from '../ui/Spinner';
 
 const StreakLostHouse = () => {
+  const { width, height: screenHeight } = Dimensions.get('window');
   const router = useRouter();
   const { habit } = useHabit();
+  const height = width / 1;
+
+  const topOffset = screenHeight * 0.18;
 
   const goBack = () => {
     router.push('/');
@@ -18,19 +22,30 @@ const StreakLostHouse = () => {
   if (!habit) return <Spinner />;
 
   return (
-    <View className="relative h-full w-full flex-1">
-      <Container className="mx-auto">
-        <HabitsHeader isStreakLost />
-        <View className="flex gap-4">
-          <Text className="text-center text-lg">
-            You lost your streak for {habit.name} and the house was destroyed!
-          </Text>
-        </View>
+    <View className="relative flex-1">
+      <View style={{ top: topOffset }} className="absolute h-full w-full">
+        <Container className="mx-auto">
+          <HabitsHeader isStreakLost />
+          <View className="flex gap-4">
+            <Text className="text-center text-lg">
+              You lost your streak for {habit.name} and the house was destroyed!
+            </Text>
+          </View>
 
-        <Button onPress={goBack}>Go back</Button>
-      </Container>
-      <View className="absolute bottom-0 left-1/2 -translate-x-1/2 transform">
-        <Image source={DestroyedHouse} style={{ width: 400, height: 300 }} />
+          <Button onPress={goBack}>Go back</Button>
+        </Container>
+      </View>
+
+      <View className="absolute bottom-0 w-full">
+        <Image
+          source={DestroyedHouse}
+          className="absolute bottom-0"
+          resizeMode="cover"
+          style={{
+            width: '100%',
+            height: height,
+          }}
+        />
       </View>
     </View>
   );

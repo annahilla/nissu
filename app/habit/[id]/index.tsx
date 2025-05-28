@@ -33,6 +33,7 @@ const HabitScreen = () => {
     streak,
   } = useHabit();
   const [isLoading, setIsLoading] = useState(true);
+  const [hasCheckedStreak, setHasCheckedStreak] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -94,10 +95,11 @@ const HabitScreen = () => {
     if (habit) {
       const isCurrentStreakLost = isStreakLost(habit);
       setIsLosingStreak(isCurrentStreakLost);
+      setHasCheckedStreak(true);
     }
   }, [habit]);
 
-  if (isLoading || !habit) return <LoadingScreen />;
+  if (isLoading || !habit || !hasCheckedStreak) return <LoadingScreen />;
 
   return (
     <View className="relative flex-1" {...panResponder.panHandlers}>

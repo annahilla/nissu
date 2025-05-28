@@ -32,12 +32,12 @@ const HabitInput = () => {
     <>
       <View
         style={{ height: buttonSize }}
-        className="flex w-full flex-row items-center justify-between rounded-full border border-2 border-green">
+        className="flex w-full flex-row items-center justify-between rounded-full border-2 border-green">
         <View className="flex-1 flex-row items-center gap-2">
           <TouchableOpacity
             style={{ height: checkSize, width: checkSize }}
             onPress={handleAdd}
-            className="m-1 flex items-center justify-center rounded-full border border-2 border-green text-white">
+            className="m-1 flex items-center justify-center rounded-full border-2 border-green text-white">
             <Text className="text-xl text-green">+</Text>
           </TouchableOpacity>
           <TextInput
