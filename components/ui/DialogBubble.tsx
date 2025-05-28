@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     marginHorizontal: 20,
+    maxWidth: 500,
   },
   triangleWrapper: {
     position: 'absolute',

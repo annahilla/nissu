@@ -8,12 +8,10 @@ import { useHabit } from '@/context/HabitContext';
 import Spinner from '../ui/Spinner';
 
 const StreakLostHouse = () => {
-  const { width, height: screenHeight } = Dimensions.get('window');
+  const { width } = Dimensions.get('window');
   const router = useRouter();
   const { habit } = useHabit();
   const height = width / 1;
-
-  const topOffset = screenHeight * 0.18;
 
   const goBack = () => {
     router.push('/');
@@ -23,8 +21,8 @@ const StreakLostHouse = () => {
 
   return (
     <View className="relative flex-1">
-      <View style={{ top: topOffset }} className="absolute h-full w-full">
-        <Container className="mx-auto">
+      <View className="absolute top-28 z-[100] h-full w-full">
+        <Container className="z-100 mx-auto">
           <HabitsHeader isStreakLost />
           <View className="flex gap-4">
             <Text className="text-center text-lg">
@@ -36,7 +34,7 @@ const StreakLostHouse = () => {
         </Container>
       </View>
 
-      <View className="absolute bottom-0 w-full">
+      <View className="absolute -bottom-20 w-full">
         <Image
           source={DestroyedHouse}
           className="absolute bottom-0"

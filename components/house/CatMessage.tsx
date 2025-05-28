@@ -4,6 +4,7 @@ import Cat from '@/assets/cats/cat.svg';
 import DialogBubble from '../ui/DialogBubble';
 import { useTilt } from '@/hooks/useTilt';
 import { useHabit } from '@/context/HabitContext';
+import { isTablet } from '@/consts/sizes';
 
 const CatMessage = () => {
   const { habit } = useHabit();
@@ -63,6 +64,8 @@ const CatMessage = () => {
     }
   };
 
+  const bubbleSize = isTablet ? 250 : 170;
+
   return (
     <Pressable onPress={toggleBubble}>
       <Animated.View style={{ transform: [{ rotate: tilt }, { scaleX: -1 }] }}>
@@ -73,12 +76,12 @@ const CatMessage = () => {
         style={{
           position: 'absolute',
           bottom: 80,
-          right: isBubbleShowing ? 5 : 30,
+          right: isBubbleShowing ? 5 : 3,
           zIndex: 1,
         }}>
         <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-          <DialogBubble size="small" width={isBubbleShowing ? 170 : 50}>
-            <Text className="text-center text-black">
+          <DialogBubble size="small" width={isBubbleShowing ? bubbleSize : 50}>
+            <Text className="line-clamp-3 text-center text-black">
               {showMessage ? message() : '!'}
             </Text>
           </DialogBubble>
