@@ -1,5 +1,5 @@
 import { Habit } from '@/types/habits';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, Pressable, Vibration } from 'react-native';
 import Check from '@/assets/icons/check.svg';
 import { useEffect, useState } from 'react';
 import { isCompletedToday, isStreakLost } from '@/utils/streaks';
@@ -90,7 +90,13 @@ const HabitItem = ({
   const handleNavigation = () => {
     if (currentId !== habit.$id) {
       router.replace(`/habit/${habit.$id}`);
+      Vibration.vibrate(100);
     }
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+    Vibration.vibrate();
   };
 
   useEffect(() => {
@@ -105,26 +111,26 @@ const HabitItem = ({
 
   return (
     <>
-      <TouchableOpacity
+      <Pressable
         onPress={handleNavigation}
-        onLongPress={() => setIsModalOpen(true)}
+        onLongPress={openModal}
         style={{ height: buttonSize }}
         className="my-2 flex w-full flex-row items-center justify-between rounded-full border-2 border-green bg-beige">
         <View className="flex flex-row items-center gap-2">
           {isChecked ? (
-            <TouchableOpacity
+            <Pressable
               onPress={handleCheck}
               disabled={disabled}
               style={{ height: checkSize, width: checkSize }}
               className="m-1 flex items-center justify-center rounded-full">
               <Check />
-            </TouchableOpacity>
+            </Pressable>
           ) : (
-            <TouchableOpacity
+            <Pressable
               onPress={handleCheck}
               disabled={isAlert || disabled}
               style={{ height: checkSize, width: checkSize }}
-              className={`m-1 flex items-center justify-center rounded-full border-2 ${isAlert ? 'border-green/30' : 'border-green'}`}></TouchableOpacity>
+              className={`m-1 flex items-center justify-center rounded-full border-2 ${isAlert ? 'border-green/30' : 'border-green'}`}></Pressable>
           )}
 
           <View className="flex flex-row items-start gap-1">
@@ -143,7 +149,7 @@ const HabitItem = ({
               : streak}
           </Text>
         </View>
-      </TouchableOpacity>
+      </Pressable>
 
       <EditHabitModal
         updatedHabit={updatedHabit}

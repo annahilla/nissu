@@ -1,4 +1,11 @@
-import { View, Text, Pressable, Animated, Easing } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  Animated,
+  Easing,
+  Vibration,
+} from 'react-native';
 import React, { useState, useRef } from 'react';
 import Cat from '@/assets/cats/cat.svg';
 import DialogBubble from '../ui/DialogBubble';
@@ -25,6 +32,7 @@ const CatMessage = () => {
 
   const toggleBubble = () => {
     wiggle();
+    Vibration.vibrate(100);
     if (isBubbleShowing) {
       Animated.timing(scaleAnim, {
         toValue: 0,
