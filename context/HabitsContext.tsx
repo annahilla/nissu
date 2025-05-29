@@ -24,6 +24,7 @@ interface HabitsContextInterface {
   isAddingNewHabit: boolean;
   setIsAddingNewHabit: (value: boolean) => void;
   areSomeStreaksLost: boolean;
+  streakHasLoaded: boolean;
 }
 
 interface HabitsProviderInterface {
@@ -42,6 +43,7 @@ const HabitsContext = createContext<HabitsContextInterface>({
   isAddingNewHabit: false,
   setIsAddingNewHabit: () => {},
   areSomeStreaksLost: true,
+  streakHasLoaded: false,
 });
 
 export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
@@ -53,6 +55,7 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
   const [isAddingNewHabit, setIsAddingNewHabit] = useState(false);
   const [areSomeStreaksLost, setAreSomeStreaksLost] = useState(false);
   const [lostStreakHabits, setLostStreakHabits] = useState(false);
+  const [streakHasLoaded, setStreakHasLoaded] = useState(false);
 
   const fetchHabits = async () => {
     if (user) {
@@ -151,30 +154,24 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
     );
 
     setMessage('Today is a sad day, you completely lost a streak and a house');
+    setStreakHasLoaded(true);
   };
 
   useEffect(() => {
-    if (habits && habitsToReset.length > 0) {
+    if (!habits.length) return;
+
+    const lost = habits.some((habit) => isStreakLost(habit));
+    setLostStreakHabits(lost);
+    setAreSomeStreaksLost(lost);
+
+    const toReset = habits.filter((habit) => streakHasToBeReseted(habit));
+    if (toReset.length > 0) {
       resetAllHabits();
-    }
-  }, [habitsToReset]);
-
-  useEffect(() => {
-    const areHabitsLost = habits.some((habit) => isStreakLost(habit));
-    setLostStreakHabits(areHabitsLost);
-  }, [habits]);
-
-  useEffect(() => {
-    if (habits) {
-      setAreSomeStreaksLost(lostStreakHabits);
-    }
-  }, [lostStreakHabits]);
-
-  useEffect(() => {
-    if (areSomeStreaksLost && habitsToReset.length === 0) {
+    } else if (lost) {
       setMessage('You have lost some streaks, be sure to check them up today');
+      setStreakHasLoaded(true);
     }
-  }, [areSomeStreaksLost]);
+  }, [habits]);
 
   return (
     <HabitsContext.Provider
@@ -190,6 +187,7 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
         isAddingNewHabit,
         setIsAddingNewHabit,
         areSomeStreaksLost,
+        streakHasLoaded,
       }}>
       {children}
     </HabitsContext.Provider>

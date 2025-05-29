@@ -21,7 +21,7 @@ const HabitItem = ({
   disabled?: boolean;
 }) => {
   const { user } = useAuth();
-  const { updateHabit } = useHabits();
+  const { updateHabit, streakHasLoaded } = useHabits();
   const { updateStreakProtector, streakProtector } = useStreakProtector();
   const { setMessage } = useMessage();
   const { id: currentId } = useLocalSearchParams();
@@ -37,11 +37,7 @@ const HabitItem = ({
   const [streak, setStreak] = useState(habit.streak);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updatedHabit, setUpdatedHabit] = useState(habit.name);
-  const isAlert = isStreakLost(habit);
-
-  useEffect(() => {
-    setStreak(habit.streak);
-  }, [habit.streak]);
+  const [isAlert, setIsAlert] = useState(false);
 
   const handleCheck = async () => {
     let newStreak = streak;
@@ -96,6 +92,16 @@ const HabitItem = ({
       router.replace(`/habit/${habit.$id}`);
     }
   };
+
+  useEffect(() => {
+    setStreak(habit.streak);
+  }, [habit.streak]);
+
+  useEffect(() => {
+    if (streakHasLoaded) {
+      setIsAlert(isStreakLost(habit));
+    }
+  }, [streakHasLoaded, habit]);
 
   return (
     <>
