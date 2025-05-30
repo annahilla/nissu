@@ -1,9 +1,9 @@
 import {
   View,
-  TouchableOpacity,
   Image,
   ImageSourcePropType,
   Dimensions,
+  Pressable,
 } from 'react-native';
 import { ReactNode } from 'react';
 import { useAuth } from '@/context/AuthContext';
@@ -11,6 +11,7 @@ import Logout from '@/assets/icons/logout.svg';
 import CloudsBackground from './CloudsBackground';
 import NoHouse from '@/assets/house/no-house.png';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import SoundController from '../SoundController';
 
 const CustomImageBackground = ({
   children,
@@ -44,11 +45,14 @@ const CustomImageBackground = ({
         />
       </View>
 
-      {user && (
-        <TouchableOpacity onPress={logout} className="absolute right-4 top-4">
-          <Logout />
-        </TouchableOpacity>
-      )}
+      <View className="absolute right-4 top-4 flex flex-row items-center gap-6">
+        <SoundController />
+        {user && (
+          <Pressable onPress={logout}>
+            <Logout />
+          </Pressable>
+        )}
+      </View>
       {children}
     </View>
   );

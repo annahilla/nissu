@@ -1,5 +1,11 @@
 import { Habit } from '@/types/habits';
-import { View, Text, Pressable, Vibration } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  Vibration,
+  TouchableOpacity,
+} from 'react-native';
 import Check from '@/assets/icons/check.svg';
 import { useEffect, useState } from 'react';
 import { isCompletedToday, isStreakLost } from '@/utils/streaks';
@@ -114,20 +120,20 @@ const HabitItem = ({
 
   return (
     <>
-      <Pressable
+      <TouchableOpacity
         onPress={handleNavigation}
         onLongPress={openModal}
         style={{ height: buttonSize }}
         className="my-2 flex w-full flex-row items-center justify-between rounded-full border-2 border-green bg-beige">
         <View className="flex flex-row items-center gap-2">
           {isChecked ? (
-            <Pressable
+            <TouchableOpacity
               onPress={handleCheck}
               disabled={disabled}
               style={{ height: checkSize, width: checkSize }}
               className="m-1 flex items-center justify-center rounded-full">
               <Check />
-            </Pressable>
+            </TouchableOpacity>
           ) : (
             <Pressable
               onPress={handleCheck}
@@ -152,7 +158,7 @@ const HabitItem = ({
               : streak}
           </Text>
         </View>
-      </Pressable>
+      </TouchableOpacity>
 
       <EditHabitModal
         updatedHabit={updatedHabit}
