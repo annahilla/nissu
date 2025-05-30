@@ -12,12 +12,14 @@ import DialogBubble from '../ui/DialogBubble';
 import { useTilt } from '@/hooks/useTilt';
 import { useHabit } from '@/context/HabitContext';
 import { isTablet } from '@/consts/sizes';
+import useMeowSound from '@/hooks/sounds/useMeowSound';
 
 const CatMessage = () => {
   const { habit } = useHabit();
   const [isBubbleShowing, setIsBubbleShowing] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const { tilt, wiggle } = useTilt();
+  const { playMeowSound } = useMeowSound();
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -33,6 +35,7 @@ const CatMessage = () => {
   const toggleBubble = () => {
     wiggle();
     Vibration.vibrate(100);
+    playMeowSound();
     if (isBubbleShowing) {
       Animated.timing(scaleAnim, {
         toValue: 0,

@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Vibration } from 'react-native';
 import React, { useEffect } from 'react';
 import { Container } from '../layout/Container';
 import HabitsHeader from '../layout/Header';
@@ -11,6 +11,7 @@ import Spinner from '../ui/Spinner';
 import { yesterday } from '@/consts/dates';
 import Cookie from '@/assets/icons/cookie.svg';
 import { useMessage } from '@/context/MessageContext';
+import useBiteSound from '@/hooks/sounds/useBiteSound';
 
 const LosingStreakModal = () => {
   const { user } = useAuth();
@@ -19,6 +20,7 @@ const LosingStreakModal = () => {
     useHabit();
   const { updateHabit } = useHabits();
   const { streakProtector, updateStreakProtector } = useStreakProtector();
+  const { playBiteSound } = useBiteSound();
 
   const loseStreak = () => {
     if (habit) {
@@ -35,20 +37,26 @@ const LosingStreakModal = () => {
     }
   };
 
-  const spendStreakProtector = () => {
+  const handleSpendCookie = () => {
+    playBiteSound();
+    Vibration.vibrate(100);
+    spendCookie();
+  };
+
+  const spendCookie = () => {
     if (user && habit) {
       updateStreakProtector(streakProtector.$id, {
         userId: user.$id,
         value: streakProtector.value - 1,
         $id: streakProtector.$id,
       });
-
       const updatedHabit = {
         ...habit,
         lastCompleted: yesterday,
       };
       updateHabit(habit.$id, updatedHabit);
       setHabit(updatedHabit);
+
       setMessage(`Yay! You saved the streak for ${habit.name}`);
     }
     setIsLosingStreak(false);
@@ -78,7 +86,9 @@ const LosingStreakModal = () => {
         <Button variant="outline" onPress={loseStreak}>
           Let it fall
         </Button>
-        <Button onPress={spendStreakProtector}>
+        <Button
+          onPress={handleSpendCookie}
+          disabled={streakProtector.value === 0}>
           <View className="flex flex-row items-center justify-center gap-2">
             <Cookie width={22} height={22} />
             <Text className="max-w-full flex-shrink font-bold text-beige">

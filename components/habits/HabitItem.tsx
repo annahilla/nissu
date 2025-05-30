@@ -10,6 +10,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useStreakProtector } from '@/context/StreakProtectorContext';
 import { useMessage } from '@/context/MessageContext';
 import { buttonSize, checkSize, streakSize } from '@/consts/sizes';
+import useBellSound from '@/hooks/sounds/useBellSound';
 
 const HabitItem = ({
   habit,
@@ -33,6 +34,7 @@ const HabitItem = ({
     ? isCompletedToday(habit.lastCompleted)
     : false;
 
+  const { playBellSound } = useBellSound();
   const [isChecked, setIsChecked] = useState(completed);
   const [streak, setStreak] = useState(habit.streak);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,6 +50,7 @@ const HabitItem = ({
     if (!isChecked) {
       newStreak += 1;
       newLastCompleted = today;
+      playBellSound();
       setMessage("Cool! You've completed one more streak!");
     } else if (streak > 0) {
       newStreak -= 1;

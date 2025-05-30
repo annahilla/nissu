@@ -11,7 +11,7 @@
     },
     "scheme": "nissu",
     "newArchEnabled": true,
-    "plugins": ["expo-router", "expo-asset"],
+    "plugins": ["expo-router", "expo-asset", "expo-audio"],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

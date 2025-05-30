@@ -39,7 +39,7 @@ const EditHabitModal = ({
       <CustomModal visible={isModalOpen} setVisible={setIsModalOpen}>
         <Text className="text-2xl">Edit habit</Text>
         <TextInput
-          className="rounded-full border border-2 border-brown px-5 py-3 text-lg"
+          className="rounded-full border-2 border-brown px-5 py-3 text-lg"
           value={updatedHabit}
           onChangeText={(text) => setUpdatedHabit(text)}
           onSubmitEditing={saveUpdatedHabit}

@@ -3,15 +3,18 @@ import { useMessage } from '@/context/MessageContext';
 import { useTilt } from '@/hooks/useTilt';
 import { useMemo } from 'react';
 import { Pressable, Animated, Vibration } from 'react-native';
+import useMeowSound from '@/hooks/sounds/useMeowSound';
 
 const DynamicCat = () => {
   const { generateNewMessage } = useMessage();
   const { tilt, wiggle } = useTilt();
   const randomPosition = useMemo(() => getRandomPosition(), []);
   const randomCat = useMemo(() => getRandomCat(), []);
+  const { playMeowSound } = useMeowSound();
 
   const onCatPress = () => {
     wiggle();
+    playMeowSound();
     generateNewMessage();
     Vibration.vibrate(100);
   };
