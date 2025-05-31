@@ -9,7 +9,6 @@ import { StreakProtectorProvider } from '@/context/StreakProtectorContext';
 import { MessageProvider } from '@/context/MessageContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SoundProvider } from '@/context/SoundProvider';
-import LoadingScreen from '@/components/ui/LoadingScreen';
 
 colorScheme.set('light');
 SplashScreen.preventAutoHideAsync();
@@ -35,18 +34,16 @@ function Routes() {
     }
   }, [isAppReady]);
 
+  if (!isAppReady) return null;
+
   return (
     <SafeAreaProvider onLayout={onLayoutRootView}>
-      {isAppReady ? (
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen name="login" />
-          <Stack.Screen name="habit/[id]" />
-          <Stack.Screen name="verify-email" />
-        </Stack>
-      ) : (
-        <LoadingScreen />
-      )}
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="login" />
+        <Stack.Screen name="habit/[id]" />
+        <Stack.Screen name="verify-email" />
+      </Stack>
     </SafeAreaProvider>
   );
 }
