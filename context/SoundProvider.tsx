@@ -8,30 +8,33 @@ const SOUND_PREF_KEY = 'soundOn';
 const SoundContext = createContext<{
   soundOn: boolean;
   togglePlayer: () => void;
+  loadSoundPreference: () => Promise<void>;
 }>({
   soundOn: true,
   togglePlayer: () => {},
+  loadSoundPreference: async () => {},
 });
 
 export const SoundProvider = ({ children }: { children: React.ReactNode }) => {
   const player = useAudioPlayer(backgroundMusic);
   const [soundOn, setSoundOn] = useState(true);
+  const [hasInitialized, setHasInitialized] = useState(false);
 
   useEffect(() => {
-    const loadSoundPreference = async () => {
-      const storedPref = (await AsyncStorage.getItem(SOUND_PREF_KEY)) || 'true';
-      const isSoundOn = storedPref !== 'false';
-      setSoundOn(isSoundOn);
-      if (isSoundOn) {
-        player.play();
-      }
-    };
-    loadSoundPreference();
-  }, []);
-
-  useEffect(() => {
-    AsyncStorage.setItem(SOUND_PREF_KEY, soundOn.toString());
+    if (hasInitialized) {
+      AsyncStorage.setItem(SOUND_PREF_KEY, soundOn.toString());
+    }
   }, [soundOn]);
+
+  const loadSoundPreference = async () => {
+    const storedPref = (await AsyncStorage.getItem(SOUND_PREF_KEY)) || 'true';
+    const isSoundOn = storedPref !== 'false';
+    setSoundOn(isSoundOn);
+    setHasInitialized(true);
+    if (isSoundOn) {
+      player.play();
+    }
+  };
 
   const togglePlayer = () => {
     if (player.playing) {
@@ -44,7 +47,8 @@ export const SoundProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <SoundContext.Provider value={{ soundOn, togglePlayer }}>
+    <SoundContext.Provider
+      value={{ soundOn, togglePlayer, loadSoundPreference }}>
       {children}
     </SoundContext.Provider>
   );

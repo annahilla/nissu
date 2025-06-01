@@ -8,7 +8,7 @@ import { HabitsProvider } from '@/context/HabitsContext';
 import { StreakProtectorProvider } from '@/context/StreakProtectorContext';
 import { MessageProvider } from '@/context/MessageContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { SoundProvider } from '@/context/SoundProvider';
+import { SoundProvider, useSound } from '@/context/SoundProvider';
 
 colorScheme.set('light');
 SplashScreen.preventAutoHideAsync();
@@ -21,12 +21,13 @@ SplashScreen.setOptions({
 function Routes() {
   const { checkUser } = useAuth();
   const [appIsReady, setAppIsReady] = useState(false);
+  const { loadSoundPreference } = useSound();
 
   useEffect(() => {
     async function prepare() {
       try {
         await checkUser();
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await loadSoundPreference();
       } catch (e) {
         console.warn(e);
       } finally {
