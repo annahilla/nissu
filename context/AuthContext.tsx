@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 import authService from '../services/authService';
 import { User } from '@/types/habits';
 import { account, verificationUrl } from '@/services/appwrite';
@@ -24,6 +18,7 @@ interface AuthContextInterface {
     userId: string,
     secret: string
   ) => Promise<'success' | 'error' | 'loading'>;
+  checkUser: () => Promise<void>;
 }
 
 interface AuthProviderInterface {
@@ -37,15 +32,12 @@ const AuthContext = createContext<AuthContextInterface>({
   logout: async () => {},
   isLoading: false,
   verifyEmail: async () => 'loading',
+  checkUser: async () => {},
 });
 
 export const AuthProvider = ({ children }: AuthProviderInterface) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    checkUser();
-  }, []);
 
   const checkUser = async () => {
     setIsLoading(true);
@@ -126,6 +118,7 @@ export const AuthProvider = ({ children }: AuthProviderInterface) => {
         logout,
         isLoading,
         verifyEmail,
+        checkUser,
       }}>
       {children}
     </AuthContext.Provider>

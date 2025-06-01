@@ -19,22 +19,33 @@ SplashScreen.setOptions({
 });
 
 function Routes() {
-  const { isLoading: isAuthLoading } = useAuth();
-  const [isAppReady, SetIsAppReady] = useState(false);
+  const { checkUser } = useAuth();
+  const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
-    if (!isAuthLoading) {
-      SetIsAppReady(true);
+    async function prepare() {
+      try {
+        await checkUser();
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
     }
-  }, [isAuthLoading]);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (isAppReady) {
-      await SplashScreen.hideAsync();
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(() => {
+    if (appIsReady) {
+      SplashScreen.hide();
     }
-  }, [isAppReady]);
+  }, [appIsReady]);
 
-  if (!isAppReady) return null;
+  if (!appIsReady) {
+    return null;
+  }
 
   return (
     <SafeAreaProvider onLayout={onLayoutRootView}>
