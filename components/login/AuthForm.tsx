@@ -1,8 +1,12 @@
-import { View, Text, TextInput, Alert } from 'react-native';
+import { View, Text, TextInput, Alert, Pressable } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Button from '../ui/Button';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'expo-router';
+import ForgotPasswordButton from './ForgotPasswordButton';
+
+export const inputStyles =
+  'rounded-full border border-2 border-brown p-3 placeholder:opacity-60 overflow-hidden';
 
 const AuthForm = () => {
   const router = useRouter();
@@ -12,9 +16,6 @@ const AuthForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string>('');
   const [isRegistering, setIsRegistering] = useState(false);
-
-  const inputStyles =
-    'rounded-full border border-2 border-brown p-3 placeholder:opacity-60 overflow-hidden';
 
   const toggleLoginPage = () => {
     setIsRegistering((prev) => !prev);
@@ -87,9 +88,12 @@ const AuthForm = () => {
         )}
       </View>
 
-      <Button className="w-full" onPress={handleAuth}>
-        {isRegistering ? 'Create' : 'Login'}
-      </Button>
+      <View className="flex items-center justify-center gap-4">
+        <Button className="w-full" onPress={handleAuth}>
+          {isRegistering ? 'Create' : 'Login'}
+        </Button>
+        <ForgotPasswordButton />
+      </View>
 
       <View className="flex items-center justify-center gap-4">
         <Text className="text-darkGray">

@@ -20,6 +20,7 @@ import LosingStreakModal from '@/components/house/LosingStreakModal';
 import { useHabit } from '@/context/HabitContext';
 import { isStreakLost } from '@/utils/streaks';
 import House from '@/components/house/House';
+import { onBackPress } from '@/utils/onBackPress';
 
 const HabitScreen = () => {
   const router = useRouter();
@@ -37,13 +38,8 @@ const HabitScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      const onBackPress = () => {
-        router.replace('/');
-        return true;
-      };
-
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
-    }, [router])
+    }, [])
   );
 
   const panResponder = useRef(

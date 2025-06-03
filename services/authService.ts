@@ -1,4 +1,4 @@
-import { account, verificationUrl } from './appwrite';
+import { account } from './appwrite';
 import { ID } from 'react-native-appwrite';
 
 const authService = {
@@ -35,7 +35,6 @@ const authService = {
       return null;
     }
   },
-
   async logout() {
     try {
       await account.deleteSession('current');
