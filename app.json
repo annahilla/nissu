@@ -30,7 +30,8 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.annahilla.nissu",
-      "versionCode": 9
+      "versionCode": 9,
+      "googleServicesFile": "./google-services.json"
     },
     "androidNavigationBar": {
       "visible": "sticky-immersive"
@@ -46,6 +47,7 @@
     },
     "updates": {
       "url": "https://u.expo.dev/d6d06ea2-b0ce-4f80-887c-1d7d2d5108ad"
-    }
+    },
+    "owner": "annahilla"
   }
 }

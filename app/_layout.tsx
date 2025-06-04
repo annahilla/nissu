@@ -9,6 +9,8 @@ import { StreakProtectorProvider } from '@/context/StreakProtectorContext';
 import { MessageProvider } from '@/context/MessageContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SoundProvider, useSound } from '@/context/SoundProvider';
+import { NotificationProvider } from '@/context/NotificationContext';
+import * as Notifications from 'expo-notifications';
 
 colorScheme.set('light');
 SplashScreen.preventAutoHideAsync();
@@ -16,6 +18,16 @@ SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
   duration: 1000,
   fade: true,
+});
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
 });
 
 function Routes() {
@@ -62,17 +74,19 @@ function Routes() {
 
 const RootLayout = () => {
   return (
-    <SoundProvider>
-      <AuthProvider>
-        <MessageProvider>
-          <HabitsProvider>
-            <StreakProtectorProvider>
-              <Routes />
-            </StreakProtectorProvider>
-          </HabitsProvider>
-        </MessageProvider>
-      </AuthProvider>
-    </SoundProvider>
+    <NotificationProvider>
+      <SoundProvider>
+        <AuthProvider>
+          <MessageProvider>
+            <HabitsProvider>
+              <StreakProtectorProvider>
+                <Routes />
+              </StreakProtectorProvider>
+            </HabitsProvider>
+          </MessageProvider>
+        </AuthProvider>
+      </SoundProvider>
+    </NotificationProvider>
   );
 };
 
