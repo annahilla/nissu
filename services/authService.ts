@@ -13,12 +13,15 @@ const authService = {
       };
     }
   },
-  async login(email: string, password: string) {
+  async login(email: string, password: string, expoPushToken: string | null) {
     try {
       const response = await account.createEmailPasswordSession(
         email,
         password
       );
+      if (expoPushToken) {
+        await account.createPushTarget(ID.unique(), expoPushToken);
+      }
       return response;
     } catch (error) {
       return {

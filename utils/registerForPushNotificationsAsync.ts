@@ -43,13 +43,15 @@ export async function registerForPushNotificationsAsync() {
     }
 
     try {
-      const pushTokenString = (
+      const expoPushToken = (
         await Notifications.getExpoPushTokenAsync({
           projectId,
         })
       ).data;
-      console.log(pushTokenString);
-      return pushTokenString;
+      console.log(expoPushToken);
+
+      const { data: fcmToken } = await Notifications.getDevicePushTokenAsync();
+      return { fcmToken, expoPushToken };
     } catch (e: unknown) {
       handleRegistrationError(`${e}`);
     }

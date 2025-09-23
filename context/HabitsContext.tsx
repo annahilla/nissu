@@ -11,6 +11,8 @@ import { Alert, LayoutAnimation } from 'react-native';
 import habitsService from '@/services/habitService';
 import { isStreakLost, streakHasToBeReseted } from '@/utils/streaks';
 import { useMessage } from './MessageContext';
+import * as Notifications from 'expo-notifications';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface HabitsContextInterface {
   habits: Habit[];
@@ -54,7 +56,6 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
   const [updatedHabit, setUpdatedHabit] = useState('');
   const [isAddingNewHabit, setIsAddingNewHabit] = useState(false);
   const [areSomeStreaksLost, setAreSomeStreaksLost] = useState(false);
-  const [lostStreakHabits, setLostStreakHabits] = useState(false);
   const [streakHasLoaded, setStreakHasLoaded] = useState(false);
 
   const fetchHabits = async () => {
@@ -135,6 +136,47 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
     }
   };
 
+  const isToday = (date: Date) => {
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  };
+
+  const scheduleReminderNotification = async () => {
+    const id = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Don't lose your streaks! 🌟",
+        body: 'You still have habits to complete today.',
+        data: { screen: 'index' },
+      },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.DAILY,
+        hour: 20,
+        minute: 0,
+      },
+    });
+
+    await AsyncStorage.setItem('todayReminderNotificationId', id);
+  };
+
+  const cancelTodayNotificationIfAllCompleted = async () => {
+    const incompleteHabits = habits.filter((habit) => {
+      if (!habit.lastCompleted) return true;
+      const lastDate = new Date(habit.lastCompleted);
+      return !isToday(lastDate);
+    });
+
+    if (incompleteHabits.length === 0) {
+      const id = await AsyncStorage.getItem('todayReminderNotificationId');
+      if (id) {
+        await Notifications.cancelScheduledNotificationAsync(id);
+      }
+    }
+  };
+
   const habitsToReset = habits.filter((habit) => streakHasToBeReseted(habit));
 
   const resetAllHabits = async () => {
@@ -161,7 +203,6 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
     if (!habits.length) return;
 
     const lost = habits.some((habit) => isStreakLost(habit));
-    setLostStreakHabits(lost);
     setAreSomeStreaksLost(lost);
 
     const toReset = habits.filter((habit) => streakHasToBeReseted(habit));
@@ -172,6 +213,13 @@ export const HabitsProvider = ({ children }: HabitsProviderInterface) => {
       setStreakHasLoaded(true);
     }
   }, [habits]);
+
+  useEffect(() => {
+    if (!isLoading && habits.length > 0) {
+      scheduleReminderNotification();
+      cancelTodayNotificationIfAllCompleted();
+    }
+  }, [isLoading, habits]);
 
   return (
     <HabitsContext.Provider

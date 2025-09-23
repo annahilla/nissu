@@ -11,6 +11,7 @@ import { registerForPushNotificationsAsync } from '@/utils/registerForPushNotifi
 
 interface NotificationContextType {
   expoPushToken: string | null;
+  fcmToken: string | null;
   notification: Notifications.Notification | null;
   error: Error | null;
 }
@@ -37,6 +38,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   children,
 }) => {
   const [expoPushToken, setExpoPushToken] = useState<string>('');
+  const [fcmToken, setFcmToken] = useState<string | null>(null);
   const [notification, setNotification] =
     useState<Notifications.Notification | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -48,7 +50,12 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(
-      (token) => token && setExpoPushToken(token),
+      (token) => {
+        if (token) {
+          setExpoPushToken(token.expoPushToken);
+          setFcmToken(token.fcmToken);
+        }
+      },
       (error) => setError(error)
     );
 
@@ -75,7 +82,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
   return (
     <NotificationContext.Provider
-      value={{ expoPushToken, notification, error }}>
+      value={{ expoPushToken, fcmToken, notification, error }}>
       {children}
     </NotificationContext.Provider>
   );

@@ -2,6 +2,7 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 import authService from '../services/authService';
 import { User } from '@/types/habits';
 import { account, verificationUrl } from '@/services/appwrite';
+import { useNotification } from './NotificationContext';
 
 interface AuthResponse {
   error?: string;
@@ -38,6 +39,7 @@ const AuthContext = createContext<AuthContextInterface>({
 export const AuthProvider = ({ children }: AuthProviderInterface) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { fcmToken } = useNotification();
 
   const checkUser = async () => {
     setIsLoading(true);
@@ -61,7 +63,7 @@ export const AuthProvider = ({ children }: AuthProviderInterface) => {
   };
 
   const login = async (email: string, password: string) => {
-    const response = await authService.login(email, password);
+    const response = await authService.login(email, password, fcmToken);
 
     if ('error' in response) {
       return response;
