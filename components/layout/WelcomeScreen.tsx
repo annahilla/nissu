@@ -1,15 +1,16 @@
 import { View, Text } from 'react-native';
-import React from 'react';
 import DialogBubble from '../ui/DialogBubble';
 import HabitInput from '../habits/HabitInput';
 import Button from '../ui/Button';
 import Cat from '@/assets/cats/cat.svg';
 import { useHabits } from '@/context/HabitsContext';
 import useKeyboardVisible from '@/hooks/useKeyboardVisible';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const WelcomeScreen = () => {
   const { isAddingNewHabit, setIsAddingNewHabit } = useHabits();
   const { keyboardVisible } = useKeyboardVisible();
+  const insets = useSafeAreaInsets();
 
   return (
     <>
@@ -37,7 +38,9 @@ const WelcomeScreen = () => {
         </DialogBubble>
       </View>
 
-      <View className="absolute bottom-2 right-4">
+      <View
+        className="absolute"
+        style={{ bottom: insets.bottom + 16, right: 16 }}>
         <Cat />
       </View>
     </>

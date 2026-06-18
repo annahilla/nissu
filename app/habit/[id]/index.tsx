@@ -21,6 +21,7 @@ import { useHabit } from '@/context/HabitContext';
 import { isStreakLost } from '@/utils/streaks';
 import House from '@/components/house/House';
 import { onBackPress } from '@/utils/onBackPress';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HabitScreen = () => {
   const router = useRouter();
@@ -35,6 +36,7 @@ const HabitScreen = () => {
   } = useHabit();
   const [isLoading, setIsLoading] = useState(true);
   const [hasCheckedStreak, setHasCheckedStreak] = useState(false);
+  const insets = useSafeAreaInsets();
 
   useFocusEffect(
     useCallback(() => {
@@ -100,8 +102,8 @@ const HabitScreen = () => {
   return (
     <View className="relative flex-1" {...panResponder.panHandlers}>
       <CloudsBackground />
-      <View className="absolute z-10 w-full">
-        <View className="mt-2 flex flex-row items-center justify-between gap-4 p-4">
+      <View className="absolute z-10 w-full" style={{ top: insets.top }}>
+        <View className="flex flex-row items-center justify-between gap-4 p-4">
           <TouchableOpacity onPress={() => router.replace('/')}>
             <BackIcon />
           </TouchableOpacity>
@@ -118,7 +120,9 @@ const HabitScreen = () => {
 
       <View className="relative flex-1">
         <House />
-        <View className="absolute bottom-2 right-4">
+        <View
+          className="absolute"
+          style={{ bottom: insets.bottom + 2, right: 16 }}>
           {!isLosingStreak && !isLostStreak && <CatMessage />}
         </View>
       </View>

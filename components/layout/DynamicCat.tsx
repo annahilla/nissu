@@ -4,6 +4,7 @@ import { useTilt } from '@/hooks/useTilt';
 import { useMemo } from 'react';
 import { Pressable, Animated, Vibration } from 'react-native';
 import useMeowSound from '@/hooks/sounds/useMeowSound';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const DynamicCat = () => {
   const { generateNewMessage } = useMessage();
@@ -11,6 +12,7 @@ const DynamicCat = () => {
   const randomPosition = useMemo(() => getRandomPosition(), []);
   const randomCat = useMemo(() => getRandomCat(), []);
   const { playMeowSound } = useMeowSound();
+  const insets = useSafeAreaInsets();
 
   const onCatPress = () => {
     wiggle();
@@ -22,7 +24,11 @@ const DynamicCat = () => {
   return (
     <Pressable
       onPress={onCatPress}
-      style={[{ position: 'absolute' }, randomPosition]}>
+      style={{
+        position: 'absolute',
+        bottom: insets.bottom + 8,
+        right: 8,
+      }}>
       <Animated.View style={{ transform: [{ rotate: tilt }] }}>
         {randomCat}
       </Animated.View>
