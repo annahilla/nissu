@@ -10,16 +10,21 @@
       "tsconfigPaths": true
     },
     "scheme": "nissu",
-    "newArchEnabled": true,
-    "plugins": ["expo-router", "expo-asset", "expo-audio"],
+    "plugins": [
+      "expo-router",
+      "expo-asset",
+      "expo-audio",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#E9E8DF",
+          "image": "./assets/splash.png"
+        }
+      ]
+    ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#E9E8DF"
-    },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
@@ -32,9 +37,6 @@
       "package": "com.annahilla.nissu",
       "versionCode": 9,
       "googleServicesFile": "./google-services.json"
-    },
-    "androidNavigationBar": {
-      "visible": "sticky-immersive"
     },
     "extra": {
       "router": {},
