@@ -11,6 +11,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SoundProvider, useSound } from '@/context/SoundProvider';
 import { NotificationProvider } from '@/context/NotificationContext';
 import * as Notifications from 'expo-notifications';
+import { RefreshProvider } from '@/context/RefreshControlContext';
+import GlobalRefresh from '@/components/layout/GlobalRefresh';
 
 colorScheme.set('light');
 SplashScreen.preventAutoHideAsync();
@@ -62,12 +64,14 @@ function Routes() {
 
   return (
     <SafeAreaProvider onLayout={onLayoutRootView}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="login" />
-        <Stack.Screen name="habit/[id]" />
-        <Stack.Screen name="verify-email" />
-      </Stack>
+      <GlobalRefresh>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="login" />
+          <Stack.Screen name="habit/[id]" />
+          <Stack.Screen name="verify-email" />
+        </Stack>
+      </GlobalRefresh>
     </SafeAreaProvider>
   );
 }
@@ -80,7 +84,9 @@ const RootLayout = () => {
           <MessageProvider>
             <HabitsProvider>
               <StreakProtectorProvider>
-                <Routes />
+                <RefreshProvider>
+                  <Routes />
+                </RefreshProvider>
               </StreakProtectorProvider>
             </HabitsProvider>
           </MessageProvider>

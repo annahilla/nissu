@@ -1,5 +1,4 @@
-import { View, Text } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../ui/Button';
 import { account, verificationUrl } from '@/services/appwrite';
 
