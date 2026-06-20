@@ -19,6 +19,7 @@ interface AuthContextInterface {
     secret: string
   ) => Promise<'success' | 'error' | 'loading'>;
   checkUser: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 
 interface AuthProviderInterface {
@@ -33,6 +34,7 @@ const AuthContext = createContext<AuthContextInterface>({
   isLoading: false,
   verifyEmail: async () => 'loading',
   checkUser: async () => {},
+  refreshUser: async () => {},
 });
 
 export const AuthProvider = ({ children }: AuthProviderInterface) => {
@@ -50,6 +52,16 @@ export const AuthProvider = ({ children }: AuthProviderInterface) => {
     }
 
     setIsLoading(false);
+  };
+
+  const refreshUser = async () => {
+    const response = await authService.getUser();
+
+    if (response && 'error' in response) {
+      setUser(null);
+    } else {
+      setUser(response);
+    }
   };
 
   const sendVerificationEmail = async () => {
@@ -119,6 +131,7 @@ export const AuthProvider = ({ children }: AuthProviderInterface) => {
         isLoading,
         verifyEmail,
         checkUser,
+        refreshUser,
       }}>
       {children}
     </AuthContext.Provider>

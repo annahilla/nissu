@@ -2,12 +2,23 @@ import { View, Text } from 'react-native';
 import { useAuth } from '@/context/AuthContext';
 import BackgroundLayout from '../layout/BackgroundLayout';
 import Logo from '@/assets/logo.svg';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import ResendEmailButton from './ResendEmailButton';
+import { useCallback } from 'react';
 
 const VerifyUserMessage = () => {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
+
+  useFocusEffect(
+    useCallback(() => {
+      const interval = setInterval(() => {
+        refreshUser();
+      }, 2000);
+
+      return () => clearInterval(interval);
+    }, [])
+  );
 
   return (
     <BackgroundLayout className="px-10 py-12">
