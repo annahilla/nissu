@@ -2,7 +2,6 @@ import { View } from 'react-native';
 import HappyCat from '@/assets/cats/happy-cat.svg';
 import ScaredCat from '@/assets/cats/scared-cat.svg';
 import CryingCat from '@/assets/cats/crying-cat.svg';
-import StreakProtector from '../habits/StreakProtector';
 
 const HabitsHeader = ({
   isLosingStreak,
@@ -15,7 +14,6 @@ const HabitsHeader = ({
 }) => {
   return (
     <View className="flex w-full flex-row items-center justify-between">
-      <StreakProtector showModal={showModal} />
       {isStreakLost ? (
         <CryingCat width={24} height={24} />
       ) : isLosingStreak ? (

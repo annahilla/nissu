@@ -29,8 +29,7 @@ const EditHabitModal = ({
       ...habit,
       name: updatedHabit,
     };
-
-    updateHabit(habit.$id, newHabit);
+    updateHabit(newHabit);
     setIsModalOpen(false);
   };
 
@@ -69,7 +68,7 @@ const EditHabitModal = ({
             onPress={() => setIsConfirmDeleteModalOpen(false)}>
             No
           </Button>
-          <Button className="flex-1" onPress={() => deleteHabit(habit.$id)}>
+          <Button className="flex-1" onPress={() => deleteHabit(habit.id)}>
             Yes
           </Button>
         </View>

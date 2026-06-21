@@ -1,13 +1,5 @@
-import {
-  View,
-  Image,
-  ImageSourcePropType,
-  Dimensions,
-  Pressable,
-} from 'react-native';
+import { View, Image, ImageSourcePropType, Dimensions } from 'react-native';
 import { ReactNode } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import Logout from '@/assets/icons/logout.svg';
 import CloudsBackground from './CloudsBackground';
 import PlainBackgroundImage from '@/assets/house/no-house.png';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,7 +12,6 @@ const CustomImageBackground = ({
   children: ReactNode;
   className?: string;
 }) => {
-  const { user, logout } = useAuth();
   const { width } = Dimensions.get('window');
   const insets = useSafeAreaInsets();
 
@@ -44,11 +35,6 @@ const CustomImageBackground = ({
         className="absolute flex flex-row items-center gap-6"
         style={{ top: insets.top + 16, right: 16 }}>
         <SoundController />
-        {user && (
-          <Pressable onPress={logout}>
-            <Logout />
-          </Pressable>
-        )}
       </View>
       {children}
     </View>

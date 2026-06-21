@@ -7,13 +7,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Check from '@/assets/icons/check.svg';
-import { useEffect, useState } from 'react';
-import { isCompletedToday, isStreakLost } from '@/utils/streaks';
+import { useState } from 'react';
+import { isCompletedToday } from '@/utils/streaks';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import EditHabitModal from './EditHabitModal';
 import { useHabits } from '@/context/HabitsContext';
-import { useAuth } from '@/context/AuthContext';
-import { useStreakProtector } from '@/context/StreakProtectorContext';
 import { useMessage } from '@/context/MessageContext';
 import { buttonSize, checkSize, streakSize } from '@/consts/sizes';
 import useBellSound from '@/hooks/sounds/useBellSound';
@@ -27,12 +25,10 @@ const HabitItem = ({
   currentStreak?: number;
   disabled?: boolean;
 }) => {
-  const { user } = useAuth();
-  const { updateHabit, streakHasLoaded } = useHabits();
-  const { updateStreakProtector, streakProtector } = useStreakProtector();
+  const { updateHabit } = useHabits();
   const { setMessage } = useMessage();
-  const { id: currentId } = useLocalSearchParams();
   const router = useRouter();
+  const { id: currentId } = useLocalSearchParams();
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(today.getDate() - 1);
@@ -47,58 +43,37 @@ const HabitItem = ({
   const [updatedHabit, setUpdatedHabit] = useState(habit.name);
   const [isAlert, setIsAlert] = useState(false);
 
-  const handleCheck = async () => {
-    let newStreak = streak;
-    let newLastCompleted = habit.lastCompleted;
+  const handleCheck = () => {
+    if (disabled) return;
 
-    const wasMultipleOf7 = streak > 0 && streak % 7 === 0;
-
-    if (!isChecked) {
-      newStreak += 1;
-      newLastCompleted = today;
+    if (isChecked) {
+      setIsChecked(false);
+      setStreak((prev) => prev - 1);
+      const updatedHabit = {
+        ...habit,
+        streak: streak - 1,
+        lastCompleted: yesterday,
+      } as Habit;
+      updateHabit(updatedHabit);
+      setMessage('What? I thought you really completed this one');
+      return;
+    } else {
+      setIsChecked(true);
+      setStreak((prev) => prev + 1);
+      const updatedHabit = {
+        ...habit,
+        streak: streak + 1,
+        lastCompleted: today,
+      } as Habit;
+      updateHabit(updatedHabit);
       playBellSound();
       setMessage("Cool! You've completed one more streak!");
-    } else if (streak > 0) {
-      newStreak -= 1;
-      newLastCompleted = newStreak === 0 ? null : yesterday;
-      setMessage('What? I thought you really completed this one');
-    }
-
-    const isNowMultipleOf7 = newStreak > 0 && newStreak % 7 === 0;
-
-    const updatedHabitObject = {
-      ...habit,
-      streak: newStreak,
-      lastCompleted: newLastCompleted,
-    };
-
-    setStreak(newStreak);
-    setIsChecked((prev) => !prev);
-    await updateHabit(habit.$id, updatedHabitObject);
-
-    if (!user) return;
-
-    if (!isChecked && isNowMultipleOf7) {
-      updateStreakProtector(streakProtector.$id, {
-        userId: user.$id,
-        value: streakProtector.value + 1,
-        $id: streakProtector.$id,
-      });
-      setMessage('Yaaaaay! You won a streak protector!');
-    }
-
-    if (isChecked && wasMultipleOf7) {
-      updateStreakProtector(streakProtector.$id, {
-        userId: user.$id,
-        value: Math.max(streakProtector.value - 1, 0),
-        $id: streakProtector.$id,
-      });
     }
   };
 
   const handleNavigation = () => {
-    if (currentId !== habit.$id) {
-      router.replace(`/habit/${habit.$id}`);
+    if (currentId !== habit.id) {
+      router.replace(`/habit/${habit.id}`);
       Vibration.vibrate(100);
     }
   };
@@ -107,16 +82,6 @@ const HabitItem = ({
     setIsModalOpen(true);
     Vibration.vibrate();
   };
-
-  useEffect(() => {
-    setStreak(habit.streak);
-  }, [habit.streak]);
-
-  useEffect(() => {
-    if (streakHasLoaded) {
-      setIsAlert(isStreakLost(habit));
-    }
-  }, [streakHasLoaded, habit]);
 
   return (
     <>

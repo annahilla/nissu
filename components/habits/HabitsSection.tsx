@@ -9,8 +9,7 @@ import { habitSectionSize, isBigTablet, isTablet } from '@/consts/sizes';
 import { useEffect, useState } from 'react';
 
 const HabitsSection = () => {
-  const { habits, isAddingNewHabit, setIsAddingNewHabit, areSomeStreaksLost } =
-    useHabits();
+  const { habits, isAddingNewHabit, setIsAddingNewHabit } = useHabits();
   const [size, setSize] = useState(habitSectionSize);
 
   const extraHabits = habits.length - 4;
@@ -27,7 +26,7 @@ const HabitsSection = () => {
 
   return (
     <Container style={{ height: size }}>
-      <HabitsHeader isLosingStreak={areSomeStreaksLost} showModal />
+      <HabitsHeader isLosingStreak={false} showModal />
       <HabitList habits={habits} />
       <View className="w-full">
         <View className={isAddingNewHabit ? 'block' : 'hidden'}>

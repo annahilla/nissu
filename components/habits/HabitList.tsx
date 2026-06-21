@@ -10,7 +10,7 @@ const HabitList = ({ habits }: HabitListProps) => {
   return (
     <FlatList
       data={habits}
-      keyExtractor={(item) => item.$id}
+      keyExtractor={(item) => item.id}
       renderItem={({ item }) => <HabitItem habit={item} />}
       showsVerticalScrollIndicator={false}
     />

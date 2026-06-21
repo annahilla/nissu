@@ -1,24 +1,21 @@
-import ProtectedRoute from '@/components/ProtectedRoute';
-import HomeContent from '@/components/habits/HomeContent';
-import VerifyUserMessage from '@/components/login/VerifyUserMessage';
-import { useAuth } from '@/context/AuthContext';
+import HabitsScreen from '@/components/habits/HabitsScreen';
+import CustomImageBackground from '@/components/layout/CustomImageBackground';
+import WelcomeScreen from '@/components/layout/WelcomeScreen';
+import LoadingScreen from '@/components/ui/LoadingScreen';
 import { useHabits } from '@/context/HabitsContext';
 import { useFocusEffect, useRouter } from 'expo-router';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { BackHandler } from 'react-native';
 
 const HomeScreen = () => {
-  const { user } = useAuth();
-  const { fetchHabits } = useHabits();
   const router = useRouter();
+  const { loadHabits, habits, isLoading } = useHabits();
 
-  const isVerified = user?.emailVerification;
-
-  useEffect(() => {
-    if (user) {
-      fetchHabits();
-    }
-  }, [user]);
+  useFocusEffect(
+    useCallback(() => {
+      loadHabits();
+    }, [])
+  );
 
   useFocusEffect(
     useCallback(() => {
@@ -31,10 +28,14 @@ const HomeScreen = () => {
     }, [router])
   );
 
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
-    <ProtectedRoute>
-      {isVerified ? <HomeContent /> : <VerifyUserMessage />}
-    </ProtectedRoute>
+    <CustomImageBackground className="relative">
+      {habits.length > 0 ? <HabitsScreen /> : <WelcomeScreen />}
+    </CustomImageBackground>
   );
 };
 

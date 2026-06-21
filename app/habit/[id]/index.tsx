@@ -16,7 +16,6 @@ import HabitItem from '@/components/habits/HabitItem';
 import BackIcon from '@/assets/icons/back-icon.svg';
 import CloudsBackground from '@/components/layout/CloudsBackground';
 import CatMessage from '@/components/house/CatMessage';
-import LosingStreakModal from '@/components/house/LosingStreakModal';
 import { useHabit } from '@/context/HabitContext';
 import { isStreakLost } from '@/utils/streaks';
 import House from '@/components/house/House';
@@ -66,19 +65,22 @@ const HabitScreen = () => {
     })
   ).current;
 
-  useEffect(() => {
-    fetchHabit();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadHabit();
+    }, [])
+  );
 
-  const fetchHabit = async () => {
+  const loadHabit = async () => {
     setIsLoading(true);
+    console.log('Loading habit with id:', id);
     const response = await habitsService.getHabit(id as string);
 
     if (response.error || !response.data) {
       Alert.alert('Error', response.error || 'No data received');
     } else {
       const fetchedHabit: Habit = {
-        $id: response.data.$id,
+        id: response.data.id,
         name: response.data.name,
         streak: response.data.streak,
         lastCompleted: response.data.lastCompleted,
@@ -112,11 +114,6 @@ const HabitScreen = () => {
           </View>
         </View>
       </View>
-      {isLosingStreak && (
-        <View className="absolute top-28 z-[100] w-full">
-          <LosingStreakModal />
-        </View>
-      )}
 
       <View className="relative flex-1">
         <House />
