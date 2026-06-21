@@ -23,7 +23,6 @@
     "expo-doctor": "^1.13.3",
     "expo-linking": "~56.0.14",
     "expo-navigation-bar": "~56.0.3",
-    "expo-notifications": "~56.0.18",
     "expo-router": "~56.2.11",
     "expo-splash-screen": "^56.0.10",
     "expo-status-bar": "~56.0.4",
@@ -66,6 +65,7 @@
   "private": true,
   "overrides": {
     "react-native-appwrite": {
+      "expo-file-system": "18.*.*",
       "react-native": ">=0.76.7 <1.0.0"
     }
   },
