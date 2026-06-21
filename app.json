@@ -21,6 +21,15 @@
           "image": "./assets/splash.png",
           "imageWidth": 300
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableMinifyInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true
+          }
+        }
       ]
     ],
     "orientation": "portrait",
