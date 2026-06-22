@@ -1,8 +1,8 @@
 import databaseService from './databaseService';
 import { ID, Query } from 'react-native-appwrite';
 
-const dbId = process.env.APPWRITE_DB as string;
-const colId = process.env.APPWRITE_COL_STREAK_ID as string;
+const dbId = process.env.EXPO_PUBLIC_APPWRITE_DB as string;
+const colId = process.env.EXPO_PUBLIC_APPWRITE_COL_STREAK_ID as string;
 
 const streakProtectorService = {
   async getStreakProtector(userId: string) {

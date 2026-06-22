@@ -15,7 +15,7 @@ import Button from '@/components/ui/Button';
 import { useFocusEffect } from 'expo-router';
 import { onBackPress } from '@/utils/onBackPress';
 
-const url = process.env.FORGOT_PASSWORD_URL;
+const url = process.env.EXPO_PUBLIC_FORGOT_PASSWORD_URL;
 
 const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState('');

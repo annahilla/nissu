@@ -1,6 +1,7 @@
 import ProtectedRoute from '@/components/ProtectedRoute';
 import HomeContent from '@/components/habits/HomeContent';
 import VerifyUserMessage from '@/components/login/VerifyUserMessage';
+import LoadingScreen from '@/components/ui/LoadingScreen';
 import { useAuth } from '@/context/AuthContext';
 import { useHabits } from '@/context/HabitsContext';
 import { useFocusEffect, useRouter } from 'expo-router';

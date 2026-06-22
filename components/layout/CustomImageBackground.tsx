@@ -43,7 +43,6 @@ const CustomImageBackground = ({
       <View
         className="absolute flex flex-row items-center gap-6"
         style={{ top: insets.top + 16, right: 16 }}>
-        <SoundController />
         {user && (
           <Pressable onPress={logout}>
             <Logout />
